@@ -9,9 +9,8 @@
 #'
 #' @return The function returns a table with 2 columns, the first one with the years and the second one with
 #' the associated probability of the mast event
-#' @export
 #'
-#' @examples mastBeech(filename = "85930_t2s_tp.nc")
+#' @examples mastProbability <- mastBeech(filename = "85930_t2s_tp.nc")
 
 mastBeech <- function(filename){
 

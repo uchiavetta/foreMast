@@ -12,10 +12,7 @@
 #' @param site_id Set as empty, it is a string where it is possible to insert the study area id, which will be
 #'                reported in the file name
 #'
-#' @return
-#' @export
-#'
-#' @examples
+
 
 cdsDownload <- function(U_ID, API_Key, lat, lon, sPath, site_id = ""){
   ecmwfr::wf_set_key(user = U_ID, key = API_Key, service = 'cds')

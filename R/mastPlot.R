@@ -7,9 +7,9 @@
 #' @param printPlot To print the plot as pdf, set the parameter to TRUE (FALSE by default)
 #'
 #' @return If printPlot == FALSE, returns the plot without printing it
-#' @export
 #'
-#' @examples
+#' @examples mastProbability <- mastBeech(filename = "85930_t2s_tp.nc")
+#'           plot <- mastPlot(predictionT = mastProbability)
 mastPlot <- function(predictionT, printPlot = FALSE){
 
   if (printPlot == FALSE){

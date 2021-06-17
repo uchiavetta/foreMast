@@ -19,5 +19,5 @@ CDS API. It prints a plot representing a time series of the mast event probabilt
 data to the current year
 }
 \examples{
-mastBeech(filename = "85930_t2s_tp.nc")
+mastProbability <- mastBeech(filename = "85930_t2s_tp.nc")
 }

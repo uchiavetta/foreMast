@@ -1,8 +1,25 @@
-mast <- function(year.list, filePath){
+#' Mast probability calculation
+#'
+#' Calculate the mast probability for the current year, using as input the file downloaded from the Copernicus
+#' CDS API. It prints a plot representing a time series of the mast event probabilty from the first available
+#' data to the current year
+#'
+#'
+#' @param filePath The path to the .nc file to be used as input for the mast calculation
+#'
+#' @return The function returns a table with 2 columns, the first one with the years and the second one with
+#' the associated probability of the mast event
+#' @export
+#'
+#' @examples mast("~/downloads/ERA5/44.1_11.3_t2s_tp.nc")
+
+mast <- function(filePath){
 
   nc <- ncdf4::nc_open(filePath)
 
-  # ##creazione delle time series delle variabili climatiche
+  year.list = list(1981:format(Sys.time(), "%Y"))
+
+  # creazione delle time series delle variabili climatiche
   t2m <- stats::ts(ncdf4::ncvar_get(nc, varid= "t2m" )-273.15, frequency = 12, start = c(as.numeric(year.list[[1]][1]), 1))
   tp <- stats::ts(ncdf4::ncvar_get(nc, varid= "tp" )*1000, frequency = 12)
 
@@ -51,15 +68,18 @@ mast <- function(year.list, filePath){
 
   st0s <- ffst0(t=t, p=p, syear = 1981)
 
-  # mast_plot <- ggplot2::ggplot(st0s, aes(x = Year, y = prob, group = 1)) +
-  #   geom_point() +
-  #   geom_line(color = "red") +
-  #   annotate('rect', xmin = -Inf, xmax = Inf, ymin = .75, ymax = 1, alpha = .2, fill = 'darkgreen') +
-  #   annotate('rect', xmin = -Inf, xmax = Inf, ymin = .5, ymax = .75, alpha = .2, fill = 'green') +
-  #   annotate('rect', xmin = -Inf, xmax = Inf, ymin = 0, ymax = .5, alpha = .2, fill = 'lightgreen') +
-  #   ggtitle('Yearly mast event probability') +
-  #   theme_bw() %+replace% theme(text = element_text(size=15),
-  #                               axis.text.x = element_text(angle = 90, vjust = 0.5, size=11))
+  pdf("mast prediction.pdf", width = 8.3, height = 11.7)
+  mast_plot <- ggplot2::ggplot(st0s, aes(x = Year, y = prob, group = 1)) +
+    geom_point() +
+    geom_line(color = "red") +
+    annotate('rect', xmin = -Inf, xmax = Inf, ymin = .75, ymax = 1, alpha = .2, fill = 'darkgreen') +
+    annotate('rect', xmin = -Inf, xmax = Inf, ymin = .5, ymax = .75, alpha = .2, fill = 'green') +
+    annotate('rect', xmin = -Inf, xmax = Inf, ymin = 0, ymax = .5, alpha = .2, fill = 'lightgreen') +
+    ggtitle('Yearly mast event probability') +
+    theme_bw() %+replace% theme(text = element_text(size=15),
+                                axis.text.x = element_text(angle = 90, vjust = 0.5, size=11))
+  dev.off()
+
   return(st0s)
 }
 

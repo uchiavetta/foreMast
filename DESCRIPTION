@@ -1,16 +1,26 @@
 Package: foreMast
-Title: What the Package Does (One Line, Title Case)
+Title: Calculation of a mast event in the current year
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
+Authors@R:
+    c(person(given = "Ugo",
+           family = "Chiavetta",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+           email = "ugo.chiavetta@crea.gov.it"),
+      person(given = "Sebastian",
+           family = "Marzini",
+           role = c("ctb"),
+           email = "sebastianmarzini@gmail.com.com"))
+Description: Mast events are important forest dynamics that interact with different ecological aspects. 
+             Their prediction is crucial in planning forestry activities, aiming at an improvement of 
+             beech forest management. 
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Imports: 
+    dplyr,
+    ecmwfr,
+    ncdf4,
+    stats,
+    stringr

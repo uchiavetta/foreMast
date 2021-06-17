@@ -9,7 +9,7 @@ cdsDownload(U_ID, API_Key, lat, lon, sPath)
 \arguments{
 \item{U_ID}{The user ID for the authentication in the Coprnicus CDS service (string)}
 
-\item{API_Key}{The key needed to make an API request (integer)}
+\item{API_Key}{The key needed to make an API request (string)}
 
 \item{lat}{The latitude of the site of interest, expressed in decimals with a single decimal value (integer)}
 
@@ -26,6 +26,6 @@ downloaded from the ECMFWR "ERA-5 Land monthly averaged data", via the Copernicu
 Before using, the registration to the Copernicus CDS site is necessary.
 }
 \examples{
-cdsDownload(U_ID = 12345, API_KEY = "7025642g-0821-6351-53t1-n7k36v1r2y9l",
-                      lat = 44.2, lon = 11.32, sPath = "~/downloads/ERA5")
+cdsDownload(U_ID = "85930", API_Key = "4017122e-9803-4938-83a1-e2b75f6e2d9b",
+                      lat = 44.2, lon = 11.32, sPath = "C:/Users/seba_/Documents/Cestino_documenti")
 }

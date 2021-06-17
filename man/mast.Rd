@@ -19,5 +19,5 @@ CDS API. It prints a plot representing a time series of the mast event probabilt
 data to the current year
 }
 \examples{
-mast("~/downloads/ERA5/44.1_11.3_t2s_tp.nc")
+mast(filePath = "C:/Users/seba_/Documents/Cestino_documenti/85930_t2s_tp.nc")
 }

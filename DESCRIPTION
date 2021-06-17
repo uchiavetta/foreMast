@@ -21,6 +21,8 @@ RoxygenNote: 7.1.1
 Imports: 
     dplyr,
     ecmwfr,
+    ggplot2,
+    grDevices,
     ncdf4,
     stats,
     stringr

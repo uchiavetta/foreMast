@@ -1,4 +1,4 @@
-#' Mast probability calculation
+#' Beech mast probability calculation
 #'
 #' Calculate the mast probability for the current year, using as input the file downloaded from the Copernicus
 #' CDS API. It prints a plot representing a time series of the mast event probabilty from the first available
@@ -11,11 +11,11 @@
 #' the associated probability of the mast event
 #' @export
 #'
-#' @examples mast("~/downloads/ERA5/44.1_11.3_t2s_tp.nc")
+#' @examples mast(filename = "/85930_t2s_tp.nc")
 
-mast <- function(filePath){
+mastBeech <- function(filename){
 
-  nc <- ncdf4::nc_open(filePath)
+  nc <- ncdf4::nc_open(filename)
 
   year.list = list(1981:format(Sys.time(), "%Y"))
 
@@ -41,9 +41,8 @@ mast <- function(filePath){
   # # syear =  l'anno in cui iniziano le osservazioni, se omesso, viene automaticamente calcolato
   # #         considerando l'ultima osservazione di t e p come relative all'attualit?
   # # wsp = peso della pasciona dell'anno precedente sullo score attuale
-  ffst0 <- function(t, p, hist.p=NULL, wt=2, wp=1,
-                    syear=as.numeric(format(Sys.Date(), "%Y")) - length(t),
-                    wsp = 0.5){
+  ffst0 <- function(t, p, hist.p=NULL, wt=2, wp=1, wsp = 0.5){
+    syear = 1981
     if(length(t)!=length(p)){
       options(error = NULL)
       stop("Error: t and p must have same length")
@@ -53,11 +52,11 @@ mast <- function(filePath){
       st0 <- round((st2+st1)/2,2)
       if(is.null(hist.p)){
         sp <- (1-(dplyr::percent_rank(dplyr::lag(c(st0,0.5), 1)))[-1]^2) #sp teorico
-      } else {
+      } else { # forse eleiminare
         lhp <- length(hist.p)
         spt <- (1-(dplyr::percent_rank(dplyr::lag(c(st0,0.5), 1)))[-1]^2) #sp teorico
         spt <- utils::head(spt, lhp)
-        #sp <- c(spt, sph)
+        sp <- c(spt, sph)
       }
       st0p <- round(dplyr::percent_rank((st2+st1+wsp*sp)/(2+wsp)),2)
       years <- (syear+2):(syear+length(t))
@@ -66,19 +65,7 @@ mast <- function(filePath){
 
   }
 
-  st0s <- ffst0(t=t, p=p, syear = 1981)
-
-  pdf("mast prediction.pdf", width = 8.3, height = 11.7)
-  mast_plot <- ggplot2::ggplot(st0s, aes(x = Year, y = prob, group = 1)) +
-    geom_point() +
-    geom_line(color = "red") +
-    annotate('rect', xmin = -Inf, xmax = Inf, ymin = .75, ymax = 1, alpha = .2, fill = 'darkgreen') +
-    annotate('rect', xmin = -Inf, xmax = Inf, ymin = .5, ymax = .75, alpha = .2, fill = 'green') +
-    annotate('rect', xmin = -Inf, xmax = Inf, ymin = 0, ymax = .5, alpha = .2, fill = 'lightgreen') +
-    ggtitle('Yearly mast event probability') +
-    theme_bw() %+replace% theme(text = element_text(size=15),
-                                axis.text.x = element_text(angle = 90, vjust = 0.5, size=11))
-  dev.off()
+  st0s <- ffst0(t=t, p=p)
 
   return(st0s)
 }

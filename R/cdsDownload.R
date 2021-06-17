@@ -1,6 +1,6 @@
 #' Download of the climate data.
 #'
-#' Create a .nc file, containing the mean temperature and precipitation records of a defined location,
+#' @description Create a .nc file, containing the mean temperature and precipitation records of a defined location,
 #' downloaded from the ECMFWR "ERA-5 Land monthly averaged data", via the Copernicus CDS API.
 #' Before using, the registration to the Copernicus CDS site is necessary.
 #'
@@ -9,6 +9,8 @@
 #' @param lat The latitude of the site of interest, expressed in decimals with a single decimal value (integer)
 #' @param lon The longitude of the site of interest, expressed in decimals with a single decimal value (integer)
 #' @param sPath The path of the directory where the file is going to be saved (string)
+#' @param site_id Set as empty, it is a string where it is possible to insert the study area id, which will be
+#'                reported in the file name
 #'
 #' @return
 #' @export

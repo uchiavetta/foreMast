@@ -16,6 +16,9 @@ cdsDownload(U_ID, API_Key, lat, lon, sPath, site_id = "")
 \item{lon}{The longitude of the site of interest, expressed in decimals with a single decimal value (integer)}
 
 \item{sPath}{The path of the directory where the file is going to be saved (string)}
+
+\item{site_id}{Set as empty, it is a string where it is possible to insert the study area id, which will be
+reported in the file name}
 }
 \value{
 

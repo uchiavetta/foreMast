@@ -7,7 +7,7 @@
 mastBeech(filename)
 }
 \arguments{
-\item{filePath}{The path to the .nc file to be used as input for the mast calculation}
+\item{filename}{The name of the .nc file to be loaded as input for the analysis}
 }
 \value{
 The function returns a table with 2 columns, the first one with the years and the second one with
@@ -19,5 +19,5 @@ CDS API. It prints a plot representing a time series of the mast event probabilt
 data to the current year
 }
 \examples{
-mast(filename = "/85930_t2s_tp.nc")
+mastBeech(filename = "85930_t2s_tp.nc")
 }

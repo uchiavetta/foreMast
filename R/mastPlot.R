@@ -1,6 +1,7 @@
 #' Plots the calculated mast probability of a site
 #'
-#' Save a
+#' @description Plot the calculated mast probability on a line chart. The plot can be saved as pdf setting
+#'              printPlot = TRUE
 #'
 #' @param predictionT It is the table returned by the mastBeech function
 #' @param printPlot To print the plot as pdf, set the parameter to TRUE (FALSE by default)

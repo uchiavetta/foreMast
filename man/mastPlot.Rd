@@ -8,10 +8,13 @@ mastPlot(predictionT, printPlot = FALSE)
 }
 \arguments{
 \item{predictionT}{It is the table returned by the mastBeech function}
+
+\item{printPlot}{To print the plot as pdf, set the parameter to TRUE (FALSE by default)}
 }
 \value{
-
+If printPlot == FALSE, returns the plot without printing it
 }
 \description{
-Save a
+Plot the calculated mast probability on a line chart. The plot can be saved as pdf setting
+printPlot = TRUE
 }

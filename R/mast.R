@@ -3,13 +3,13 @@ mast <- function(year.list, filePath){
   nc <- ncdf4::nc_open(filePath)
 
   # ##creazione delle time series delle variabili climatiche
-  t2m <- ts(ncdf4::ncvar_get(nc, varid= "t2m" )-273.15, frequency = 12, start = c(as.numeric(year.list[[1]][1]), 1))
-  tp <- ts(ncdf4::ncvar_get(nc, varid= "tp" )*1000, frequency = 12)
+  t2m <- stats::ts(ncdf4::ncvar_get(nc, varid= "t2m" )-273.15, frequency = 12, start = c(as.numeric(year.list[[1]][1]), 1))
+  tp <- stats::ts(ncdf4::ncvar_get(nc, varid= "tp" )*1000, frequency = 12)
 
-  Tmean.df <- data.frame(.preformat.ts(t2m),stringsAsFactors = FALSE) #cambio la classe in data.frame
+  Tmean.df <- data.frame(stats::.preformat.ts(t2m),stringsAsFactors = FALSE) #cambio la classe in data.frame
   Tmean.s <- t <- (as.numeric(Tmean.df$Jun) + as.numeric(Tmean.df$Jul) + as.numeric(Tmean.df$Aug))/3
 
-  P.df <- data.frame(.preformat.ts(tp),stringsAsFactors = FALSE)
+  P.df <- data.frame(stats::.preformat.ts(tp),stringsAsFactors = FALSE)
   P.s <- p <- (as.numeric(P.df$Jun) + as.numeric(P.df$Jul) + as.numeric(P.df$Aug))/3
 
   # #funzione fuzzy OK
@@ -31,18 +31,18 @@ mast <- function(year.list, filePath){
       options(error = NULL)
       stop("Error: t and p must have same length")
     } else {
-      st1 <- (wt*(percent_rank(lag(t,0)))+wp*(1-percent_rank(lag(p,0))))/(wp+wt)
-      st2 <- (wt*(1-percent_rank(lag(t,1)))+wp*(percent_rank(lag(p,1))))/(wp+wt)
+      st1 <- (wt*(dplyr::percent_rank(dplyr::lag(t,0)))+wp*(1-dplyr::percent_rank(dplyr::lag(p,0))))/(wp+wt)
+      st2 <- (wt*(1-dplyr::percent_rank(dplyr::lag(t,1)))+wp*(dplyr::percent_rank(dplyr::lag(p,1))))/(wp+wt)
       st0 <- round((st2+st1)/2,2)
       if(is.null(hist.p)){
-        sp <- (1-(percent_rank(lag(c(st0,0.5), 1)))[-1]^2) #sp teorico
+        sp <- (1-(dplyr::percent_rank(dplyr::lag(c(st0,0.5), 1)))[-1]^2) #sp teorico
       } else {
         lhp <- length(hist.p)
-        spt <- (1-(percent_rank(lag(c(st0,0.5), 1)))[-1]^2) #sp teorico
-        spt <- head(spt, lhp)
-        sp <- c(spt, sph)
+        spt <- (1-(dplyr::percent_rank(dplyr::lag(c(st0,0.5), 1)))[-1]^2) #sp teorico
+        spt <- utils::head(spt, lhp)
+        #sp <- c(spt, sph)
       }
-      st0p <- round(percent_rank((st2+st1+wsp*sp)/(2+wsp)),2)
+      st0p <- round(dplyr::percent_rank((st2+st1+wsp*sp)/(2+wsp)),2)
       years <- (syear+2):(syear+length(t))
       return(data.frame('Year' = as.character(years), 'prob' = (st0p[-1])))
     }
@@ -62,6 +62,5 @@ mast <- function(year.list, filePath){
   #                               axis.text.x = element_text(angle = 90, vjust = 0.5, size=11))
   return(st0s)
 }
-
 
 

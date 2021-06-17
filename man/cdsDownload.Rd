@@ -4,7 +4,7 @@
 \alias{cdsDownload}
 \title{Download of the climate data.}
 \usage{
-cdsDownload(U_ID, API_Key, lat, lon, sPath)
+cdsDownload(U_ID, API_Key, lat, lon, sPath, site_id = "")
 }
 \arguments{
 \item{U_ID}{The user ID for the authentication in the Coprnicus CDS service (string)}
@@ -24,8 +24,4 @@ cdsDownload(U_ID, API_Key, lat, lon, sPath)
 Create a .nc file, containing the mean temperature and precipitation records of a defined location,
 downloaded from the ECMFWR "ERA-5 Land monthly averaged data", via the Copernicus CDS API.
 Before using, the registration to the Copernicus CDS site is necessary.
-}
-\examples{
-cdsDownload(U_ID = "85930", API_Key = "4017122e-9803-4938-83a1-e2b75f6e2d9b",
-                      lat = 44.2, lon = 11.32, sPath = "C:/Users/seba_/Documents/Cestino_documenti")
 }

@@ -3,8 +3,9 @@
 #' Save a
 #'
 #' @param predictionT It is the table returned by the mastBeech function
+#' @param printPlot To print the plot as pdf, set the parameter to TRUE (FALSE by default)
 #'
-#' @return
+#' @return If printPlot == FALSE, returns the plot without printing it
 #' @export
 #'
 #' @examples

@@ -50,14 +50,7 @@ mastBeech <- function(filename){
       st1 <- (wt*(dplyr::percent_rank(dplyr::lag(t,0)))+wp*(1-dplyr::percent_rank(dplyr::lag(p,0))))/(wp+wt)
       st2 <- (wt*(1-dplyr::percent_rank(dplyr::lag(t,1)))+wp*(dplyr::percent_rank(dplyr::lag(p,1))))/(wp+wt)
       st0 <- round((st2+st1)/2,2)
-      if(is.null(hist.p)){
-        sp <- (1-(dplyr::percent_rank(dplyr::lag(c(st0,0.5), 1)))[-1]^2) #sp teorico
-      } else { # forse eleiminare
-        lhp <- length(hist.p)
-        spt <- (1-(dplyr::percent_rank(dplyr::lag(c(st0,0.5), 1)))[-1]^2) #sp teorico
-        spt <- utils::head(spt, lhp)
-        sp <- c(spt, sph)
-      }
+      sp <- (1-(dplyr::percent_rank(dplyr::lag(c(st0,0.5), 1)))[-1]^2)
       st0p <- round(dplyr::percent_rank((st2+st1+wsp*sp)/(2+wsp)),2)
       years <- (syear+2):(syear+length(t))
       return(data.frame('Year' = as.character(years), 'prob' = (st0p[-1])))

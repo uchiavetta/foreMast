@@ -21,7 +21,6 @@ cdsDownload <- function(U_ID, API_Key, lat, lon, sPath, site_id = ""){
   end.year = format(Sys.time(), "%Y") #Current year
   yearL = as.character(start.year:end.year)
   monthL = stringr::str_pad(1:12, 2, pad = "0")
-
   #selezione dei parametri e delle variabili d'interesse
   request <- list(
     format = "netcdf",
@@ -34,12 +33,10 @@ cdsDownload <- function(U_ID, API_Key, lat, lon, sPath, site_id = ""){
     dataset_short_name = "reanalysis-era5-land-monthly-means",
     target = paste0(U_ID, "_", site_id, "_t2s_tp.nc")
   )
-
   file <- ecmwfr::wf_request(
     user = U_ID,
     request = request,
     transfer = TRUE,
     path = sPath,
   )
-
 }

@@ -17,6 +17,6 @@ Plot the calculated mast probability on a line chart.
 }
 \examples{
  dataT <- mastFaSyl("inst/85930_t2s_tp.nc")
-           plot <- mastPlot(dataT)
+           mastPlot(dataT)
 
 }

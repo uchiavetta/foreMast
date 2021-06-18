@@ -9,7 +9,7 @@
 #' @return Returns the plot with a line chart of the predicted mast event probability
 #'
 #' @examples  dataT <- mastFaSyl("inst/85930_t2s_tp.nc")
-#'            plot <- mastPlot(dataT)
+#'            mastPlot(dataT)
 #'
 #' @export
 mastPlot <- function(predictionT){
@@ -23,5 +23,5 @@ mastPlot <- function(predictionT){
     ggplot2::ggtitle('Yearly mast event probability') +
     ggplot2::theme_bw() %+replace% ggplot2::theme(text = ggplot2::element_text(size=10),
                                                     axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, size= 9))
-    return(mast_plot)
+  return(mast_plot)
 }

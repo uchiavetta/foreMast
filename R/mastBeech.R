@@ -1,20 +1,21 @@
-#' Beech mast probability calculation
+#' @title Beech mast probability calculation
 #'
 #' @description Calculate the mast probability for the current year, using as input the file downloaded from the Copernicus
 #' CDS API. It prints a plot representing a time series of the mast event probabilty from the first available
 #' data to the current year
 #'
 #'
-#' @param filename The name of the .nc file to be loaded as input for the analysis
+#' @param fileName The name of the .nc file to be loaded as input for the analysis
 #'
 #' @return The function returns a table with 2 columns, the first one with the years and the second one with
 #' the associated probability of the mast event
 #'
-#' @examples mastProbability <- mastBeech(filename = "85930_t2s_tp.nc")
+#' @examples mastProbability <- mastBeech(fileName = "C:/Users/seba_/Documents/foreMast/85930_t2s_tp.nc")
+#'
+#' @export
+mastBeech <- function(fileName){
 
-mastBeech <- function(filename){
-
-  nc <- ncdf4::nc_open(filename)
+  nc <- ncdf4::nc_open(filename = fileName)
 
   year.list = list(1981:format(Sys.time(), "%Y"))
 

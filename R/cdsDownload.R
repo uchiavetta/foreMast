@@ -1,4 +1,4 @@
-#' Download of the climate data.
+#' @title Download of the climate data.
 #'
 #' @description Create a .nc file, containing the mean temperature and precipitation records of a defined location,
 #' downloaded from the ECMFWR "ERA-5 Land monthly averaged data", via the Copernicus CDS API.
@@ -12,8 +12,7 @@
 #' @param site_id Set as empty, it is a string where it is possible to insert the study area id, which will be
 #'                reported in the file name
 #'
-
-
+#'@export
 cdsDownload <- function(U_ID, API_Key, lat, lon, sPath, site_id = ""){
   ecmwfr::wf_set_key(user = U_ID, key = API_Key, service = 'cds')
   start.year = 1981

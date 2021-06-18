@@ -21,4 +21,5 @@ printPlot = TRUE
 \examples{
 mastProbability <- mastBeech(filename = "85930_t2s_tp.nc")
           plot <- mastPlot(predictionT = mastProbability)
+
 }

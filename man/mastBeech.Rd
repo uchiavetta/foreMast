@@ -4,10 +4,10 @@
 \alias{mastBeech}
 \title{Beech mast probability calculation}
 \usage{
-mastBeech(filename)
+mastBeech(fileName)
 }
 \arguments{
-\item{filename}{The name of the .nc file to be loaded as input for the analysis}
+\item{fileName}{The name of the .nc file to be loaded as input for the analysis}
 }
 \value{
 The function returns a table with 2 columns, the first one with the years and the second one with
@@ -19,5 +19,6 @@ CDS API. It prints a plot representing a time series of the mast event probabilt
 data to the current year
 }
 \examples{
-mastProbability <- mastBeech(filename = "85930_t2s_tp.nc")
+mastProbability <- mastBeech(fileName = "C:/Users/seba_/Documents/foreMast/85930_t2s_tp.nc")
+
 }

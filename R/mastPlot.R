@@ -6,14 +6,13 @@
 #' @param predictionT It is the table returned by the mastBeech function
 #' @param printPlot To print the plot as pdf, set the parameter to TRUE (FALSE by default)
 #'
-#' @return If printPlot == FALSE, returns the plot without printing it
+#' @importFrom ggplot2 "%+replace%"
 #'
-#' @examples mastProbability <- mastBeech(filename = "85930_t2s_tp.nc")
-#'           plot <- mastPlot(predictionT = mastProbability)
+#' @return If printPlot == FALSE, returns the plot without printing it
 #'
 #'@export
 mastPlot <- function(predictionT, printPlot = FALSE){
-
+  Year <- prob <- NULL
   if (printPlot == FALSE){
     mast_plot <- ggplot2::ggplot(predictionT, ggplot2::aes(x = Year, y = prob, group = 1)) +
       ggplot2::geom_point() +

@@ -18,8 +18,3 @@ If printPlot == FALSE, returns the plot without printing it
 Plot the calculated mast probability on a line chart. The plot can be saved as pdf setting
 printPlot = TRUE
 }
-\examples{
-mastProbability <- mastBeech(filename = "85930_t2s_tp.nc")
-          plot <- mastPlot(predictionT = mastProbability)
-
-}

@@ -11,7 +11,7 @@
 #'
 #'
 #' @export
-mastBeech <- function(fName){
+mastFaSyl <- function(fName){
 
   nc <- ncdf4::nc_open(fName)
 

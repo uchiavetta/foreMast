@@ -15,8 +15,3 @@ Returns the plot with a line chart of the predicted mast event probability
 \description{
 Plot the calculated mast probability on a line chart.
 }
-\examples{
- dataT <- mastFaSyl("inst/85930_t2s_tp.nc")
-           mastPlot(dataT)
-
-}

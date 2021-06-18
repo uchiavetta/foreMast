@@ -4,17 +4,19 @@
 \alias{mastPlot}
 \title{Plots the calculated mast probability of a site}
 \usage{
-mastPlot(predictionT, printPlot = FALSE)
+mastPlot(predictionT)
 }
 \arguments{
 \item{predictionT}{It is the table returned by the mastBeech function}
-
-\item{printPlot}{To print the plot as pdf, set the parameter to TRUE (FALSE by default)}
 }
 \value{
-If printPlot == FALSE, returns the plot without printing it
+Returns the plot with a line chart of the predicted mast event probability
 }
 \description{
-Plot the calculated mast probability on a line chart. The plot can be saved as pdf setting
-printPlot = TRUE
+Plot the calculated mast probability on a line chart.
+}
+\examples{
+ dataT <- mastFaSyl("inst/85930_t2s_tp.nc")
+           plot <- mastPlot(dataT)
+
 }

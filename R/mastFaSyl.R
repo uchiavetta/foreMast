@@ -8,8 +8,6 @@
 #' @return The function returns a table with 2 columns, the first one with the years and the second one with
 #' the associated probability of the mast event
 #'
-#'
-#'
 #' @export
 mastFaSyl <- function(fName){
 

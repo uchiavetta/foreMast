@@ -3,7 +3,7 @@
 #' @description Calculate the mast probability over a time series, including the current year,
 #' using as input the file downloaded from the Copernicus CDS API.
 #'
-#' @param fName The name of the .nc file to be loaded
+#' @param fName The name of the netCDF file to be loaded
 #'
 #' @return The function returns a table with 2 columns, the first one with the years and the second one with
 #' the associated probability of the mast event

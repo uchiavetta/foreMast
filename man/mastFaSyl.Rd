@@ -7,7 +7,7 @@
 mastFaSyl(fName)
 }
 \arguments{
-\item{fName}{The name of the .nc file to be loaded}
+\item{fName}{The name of the netCDF file to be loaded}
 }
 \value{
 The function returns a table with 2 columns, the first one with the years and the second one with

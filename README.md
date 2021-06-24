@@ -1,4 +1,6 @@
-# foreMast   <img src="inst/logo_foreMast.png" width="100">
+<img src="inst/logo_foreMast.png" width="100">
+
+# foreMast
 
 
 

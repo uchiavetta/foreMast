@@ -43,4 +43,4 @@ mast = mastFaSyl(fName = data)
 chart = mastPlot(prediction = mast)
 plot(chart)
 ```
-[id]: inst/examplot.png
+![Caption for the picture.](inst/examplot.png)

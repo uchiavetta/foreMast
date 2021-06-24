@@ -1,6 +1,6 @@
-<img src="inst/logo_foreMast.png" width="100">
-
 # foreMast
+
+<img src="inst/logo_foreMast.png" width="100">
 
 This package is a tool that can be used to forecast masting events of European beech (Fagus sylvatica L.) based on climatic cues
 

@@ -12,6 +12,15 @@
 #' @param site_id Set as empty, it is a string where it is possible to insert the study area id, which will be
 #'                reported in the file name
 #'
+#'@examples
+#'user <- "39434"
+#'key <- "0683788m-2136-2716-61g9-g4b97f8e4l1b"
+#'N <- 44.3
+#'E <- 11.2
+#'dir <- "~/download"
+#'
+#'cdsDownload(U_ID = user, API_KEY = key, lat = N, lon = E, sPath = dir, site = "")
+#'
 #'@export
 cdsDownload <- function(U_ID, API_Key, lat, lon, sPath, site_id = ""){
   dir.create(sPath, showWarnings = F)

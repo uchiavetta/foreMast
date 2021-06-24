@@ -17,3 +17,7 @@ the associated probability of the mast event
 Calculate the mast probability over a time series, including the current year,
 using as input the file downloaded from the Copernicus CDS API.
 }
+\examples{
+mastFaSyl("39434_t2p_tp.nc")
+
+}

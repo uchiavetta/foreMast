@@ -23,6 +23,7 @@
 #'
 #'@export
 cdsDownload <- function(U_ID, API_Key, lat, lon, sPath, site_id = ""){
+  dir.create(sPath, showWarnings = F)
   ecmwfr::wf_set_key(user = U_ID, key = API_Key, service = 'cds')
   start.year = 1981
   end.year = format(Sys.time(), "%Y") #Current year

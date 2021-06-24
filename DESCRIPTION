@@ -13,7 +13,7 @@ Authors@R:
 Description: Mast events are important forest dynamics that interact with different ecological aspects. 
              Their prediction is crucial in planning forestry activities, aiming at an improvement of 
              beech forest management. 
-License: MIT + file LICENSE
+License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

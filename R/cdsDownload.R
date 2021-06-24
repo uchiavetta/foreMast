@@ -6,8 +6,10 @@
 #'
 #' @param U_ID The user ID for the authentication in the Copernicus CDS service (string)
 #' @param API_Key The key needed to make an API request (string)
-#' @param lat The latitude of the site of interest, expressed in decimals with a single decimal value (integer)
-#' @param lon The longitude of the site of interest, expressed in decimals with a single decimal value (integer)
+#' @param lat The latitude of the site of interest, expressed in decimals with a single decimal digit.
+#'            For southing latitude values use a negative number (integer)
+#' @param lon The longitude of the site of interest, expressed in decimals with a single decimal digit.
+#'            For westing longitude values, use a negative number (integer)
 #' @param sPath The path of the directory where the file is going to be saved (string)
 #' @param site_id Set as empty, it is a string where it is possible to insert the study area id, which will be
 #'                reported in the file name

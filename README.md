@@ -18,7 +18,7 @@ user = "xxxxx"
 key = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" #use the UID and the API key in your Copernicus CDS User profile
 N = 43.2 
 E = 11.3 #for southing and westing coordinates use negative values
-siteId = "random_place" #it will be attached to the name of the file to be downloaded, along with the user id
+siteId = "siteName" #it will be attached to the name of the file to be downloaded, along with the user id
 dir = "~/download" #insert the path for the directory where the file should be downloaded
 
 cdsDownload(U_ID = user, API_KEY = key, lat = N, lon = E, sPath = dir, site = "")
@@ -29,14 +29,14 @@ After that, a file with the NetCDF extension (.nc) will be saved in the director
 This function is the core of the package and contains the algorithm that calculate the mast probability, given the downloaded file with the climate cues, returning as output a table with one column containing the year series and a second one with the predicted probability (calculated as percent rank):
 
 ```r
-data = "~/download/xxxxx_random_place_t2p_tp.nc"
+data = "~/download/xxxxx_siteName_t2p_tp.nc"
 mast = mastFaSyl(fName = data)
 ```
 ### c) mastPlot(prediction)
 This third function takes the previous function output and plots it returning a line chart divided in three main areas: 
 1. a lightgreen one for the values that go from 0 to 0.5 (low seed production probability); 
 2. a green one for the values between 0.5 and 0.75 (medium seed production probability);
-3. a darkgreen one for the values that go from 0.75 and 1 (high/very high large seed production probability, i.e. a mast event).
+3. a darkgreen one for the values that go from 0.75 and 1 (high/very high large seed production probability).
 
 ```r
 mast = mastFaSyl(fName = data)

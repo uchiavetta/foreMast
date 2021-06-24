@@ -12,7 +12,8 @@ Authors@R:
            email = "sebastianmarzini@gmail.com.com"))
 Description: Mast events are important forest dynamics that interact with different ecological aspects. 
     Their prediction is crucial in planning forestry activities, aiming at an improvement of beech forest management. 
-    This package allows to calculate the probabilty of a large seed production event for a given site, using as main cues the average summer temperature and total precipitation.
+    This package allows to calculate the probabilty of a large seed production event for a given site, using as main 
+    cues the average summer temperature and total precipitation.
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true

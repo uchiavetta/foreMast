@@ -25,3 +25,13 @@ Create a .nc file, containing the mean temperature and precipitation records of 
 downloaded from the ECMFWR "ERA-5 Land monthly averaged data", via the Copernicus CDS API.
 Before using, the registration to the Copernicus CDS site is necessary.
 }
+\examples{
+user <- "39434"
+key <- "0683788m-2136-2716-61g9-g4b97f8e4l1b"
+N <- 44.3
+E <- 11.2
+dir <- "~/download"
+
+cdsDownload(U_ID = user, API_KEY = key, lat = N, lon = E, sPath = dir, site = "")
+
+}

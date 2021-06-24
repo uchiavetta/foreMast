@@ -8,7 +8,10 @@
 #'
 #' @return Returns the plot with a line chart of the predicted mast event probability
 #'
-#' @example mastPlot(mastFaSyl("inst/85930_t2s_tp.nc"))
+#' @examples
+#'
+#' data <- mastFaSyl("~/download/39434_t2p_tp.nc")
+#' finalPlot <- mastPlot(data)
 #'
 #' @export
 mastPlot <- function(prediction){

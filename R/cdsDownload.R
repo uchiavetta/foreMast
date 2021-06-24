@@ -13,8 +13,10 @@
 #'                reported in the file name
 #'
 #'@examples
-#'user <- "39434"
-#'key <- "0683788m-2136-2716-61g9-g4b97f8e4l1b"
+#'
+#'
+#'user <- "39434" #fake not working user id
+#'key <- "0683788m-2136-2716-61g9-g4b97f8e4l1b" #fake not working key
 #'N <- 44.3
 #'E <- 11.2
 #'dir <- "~/download"

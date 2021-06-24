@@ -2,9 +2,9 @@
 #'
 #' @description Create a .nc file, containing the mean temperature and precipitation records of a defined location,
 #' downloaded from the ECMFWR "ERA-5 Land monthly averaged data", via the Copernicus CDS API.
-#' Before using, the registration to the Copernicus CDS site is necessary.
+#' Before using, the registration to the Copernicus CDS site is required (https://cds.climate.copernicus.eu/#!/home)
 #'
-#' @param U_ID The user ID for the authentication in the Coprnicus CDS service (string)
+#' @param U_ID The user ID for the authentication in the Copernicus CDS service (string)
 #' @param API_Key The key needed to make an API request (string)
 #' @param lat The latitude of the site of interest, expressed in decimals with a single decimal value (integer)
 #' @param lon The longitude of the site of interest, expressed in decimals with a single decimal value (integer)

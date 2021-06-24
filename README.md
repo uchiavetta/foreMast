@@ -1,7 +1,7 @@
 # foreMast
 This package is a tool that can be used to forecast masting events of European beech (Fagus sylvatica L.) based on climatic cues
 
-# Installation
+## Installation
 The package can be installed typing:
 ```r
 devtools::install_github("uchiavetta/foreMast")

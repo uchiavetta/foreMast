@@ -37,7 +37,7 @@ mastFaSyl <- function(fName){
   # # syear =  l'anno in cui iniziano le osservazioni, se omesso, viene automaticamente calcolato
   # #         considerando l'ultima osservazione di t e p come relative all'attualit?
   # # wsp = peso della pasciona dell'anno precedente sullo score attuale
-  ffst0 <- function(t, p, hist.p=NULL, wt=2, wp=1, wsp = 0.5){
+  ffst0 <- function(t, p, hist.p=NULL, wt=3, wp=1, wsp = 0.5){
     syear = 1981
     if(length(t)!=length(p)){
       options(error = NULL)

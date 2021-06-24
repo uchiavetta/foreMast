@@ -15,7 +15,7 @@ The package is composed by three functions:
 
 ### a) cdsDownload(U_ID, API_KEY, lat, lon, sPath, site = "")
 This function allow to download the data of the monthly average temperatures and total precipitations, from 1981 to the current date. The data come from the "ERA5-Land monthly averaged data from 1981 to present". They are downloaded via the Copernicus CDS API, therefore the registration is required (https://cds.climate.copernicus.eu/#!/home).
-On the user page, the UID and API KEY are reported, which are neded as parameters for the function that works as follow:
+On the user page, the UID and API KEY are reported, which are needed as parameters for the function that works as follow:
 ```r
 user = "xxxxx" 
 key = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" #use the UID and the API key in your Copernicus CDS User profile

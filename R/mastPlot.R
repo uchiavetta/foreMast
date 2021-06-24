@@ -2,7 +2,7 @@
 #'
 #' @description Plot the calculated mast probability on a line chart.
 #'
-#' @param predictionT It is the table returned by the mastBeech function
+#' @param prediction It is the table returned by the mastFaSyl function
 #'
 #' @importFrom ggplot2 "%+replace%"
 #'
@@ -11,9 +11,9 @@
 #' @example mastPlot(mastFaSyl("inst/85930_t2s_tp.nc"))
 #'
 #' @export
-mastPlot <- function(predictionT){
+mastPlot <- function(prediction){
   Year <- prob <- NULL
-  mast_plot <- ggplot2::ggplot(predictionT, ggplot2::aes(x = Year, y = prob, group = 1)) +
+  mast_plot <- ggplot2::ggplot(prediction, ggplot2::aes(x = Year, y = prob, group = 1)) +
     ggplot2::geom_point() +
     ggplot2::geom_line(color = "red") +
     ggplot2::annotate('rect', xmin = -Inf, xmax = Inf, ymin = .75, ymax = 1, alpha = .2, fill = 'darkgreen') +

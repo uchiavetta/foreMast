@@ -1,4 +1,7 @@
+<img src="inst/logo_foreMast.png" width="100">
+
 # foreMast
+
 This package is a tool that can be used to forecast masting events of European beech (Fagus sylvatica L.) based on climatic cues
 
 ## Installation
@@ -43,4 +46,4 @@ mast = mastFaSyl(fName = data)
 chart = mastPlot(prediction = mast)
 plot(chart)
 ```
-![Caption for the picture.](inst/examplot.png)
+<img src="inst/examplot.png" width="400">

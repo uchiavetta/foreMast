@@ -4,10 +4,10 @@
 \alias{mastPlot}
 \title{Plots the calculated mast probability of a site}
 \usage{
-mastPlot(predictionT)
+mastPlot(prediction)
 }
 \arguments{
-\item{predictionT}{It is the table returned by the mastBeech function}
+\item{prediction}{It is the table returned by the mastFaSyl function}
 }
 \value{
 Returns the plot with a line chart of the predicted mast event probability

@@ -15,7 +15,7 @@ devtools::install_github("uchiavetta/foreMast")
 ## Functions
 The package is composed by three functions:
 
-### a) cdsDownload(U_ID, API_KEY, lat, lon, sPath, site = "")
+### a) cdsDownload(U_ID, API_KEY, lat, lon, sPath, site_id = "")
 This function allow to download the data of the monthly average temperatures and total precipitations, from 1981 to the current date. The data come from the "ERA5-Land monthly averaged data from 1981 to present". They are downloaded via the Copernicus CDS API, therefore the registration is required (https://cds.climate.copernicus.eu/#!/home).
 On the user page, the UID and API KEY are reported, which are needed as parameters for the function that works as follow:
 ```r
@@ -26,7 +26,7 @@ E = 11.3 #for southing and westing coordinates use negative values
 siteId = "siteName" #it will be attached to the name of the file to be downloaded, along with the user id
 dir = "~/download" #insert the path for the directory where the file should be downloaded
 
-cdsDownload(U_ID = user, API_KEY = key, lat = N, lon = E, sPath = dir, site = "")
+cdsDownload(U_ID = user, API_KEY = key, lat = N, lon = E, sPath = dir, site_id = "")
 ```
 After that, a file with the NetCDF extension (.nc) will be saved in the directory passed as parameter, containing all the neded data.
 

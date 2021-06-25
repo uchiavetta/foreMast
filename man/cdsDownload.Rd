@@ -7,13 +7,15 @@
 cdsDownload(U_ID, API_Key, lat, lon, sPath, site_id = "")
 }
 \arguments{
-\item{U_ID}{The user ID for the authentication in the Coprnicus CDS service (string)}
+\item{U_ID}{The user ID for the authentication in the Copernicus CDS service (string)}
 
 \item{API_Key}{The key needed to make an API request (string)}
 
-\item{lat}{The latitude of the site of interest, expressed in decimals with a single decimal value (integer)}
+\item{lat}{The latitude of the site of interest, expressed in decimals with a single decimal digit.
+For southing latitude values use a negative number (integer)}
 
-\item{lon}{The longitude of the site of interest, expressed in decimals with a single decimal value (integer)}
+\item{lon}{The longitude of the site of interest, expressed in decimals with a single decimal digit.
+For westing longitude values, use a negative number (integer)}
 
 \item{sPath}{The path of the directory where the file is going to be saved (string)}
 
@@ -23,15 +25,17 @@ reported in the file name}
 \description{
 Create a .nc file, containing the mean temperature and precipitation records of a defined location,
 downloaded from the ECMFWR "ERA-5 Land monthly averaged data", via the Copernicus CDS API.
-Before using, the registration to the Copernicus CDS site is necessary.
+Before using, the registration to the Copernicus CDS site is required (https://cds.climate.copernicus.eu/#!/home)
 }
 \examples{
-user <- "39434"
-key <- "0683788m-2136-2716-61g9-g4b97f8e4l1b"
+
+
+user <- "39434" #fake not working user id
+key <- "0683788m-2136-2716-61g9-g4b97f8e4l1b" #fake not working key
 N <- 44.3
 E <- 11.2
 dir <- "~/download"
 
-cdsDownload(U_ID = user, API_KEY = key, lat = N, lon = E, sPath = dir, site = "")
+cdsDownload(U_ID = user, API_KEY = key, lat = N, lon = E, sPath = dir, site_id = "")
 
 }

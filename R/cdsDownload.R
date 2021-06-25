@@ -23,7 +23,7 @@
 #'E <- 11.2
 #'dir <- "~/download"
 #'
-#'cdsDownload(U_ID = user, API_KEY = key, lat = N, lon = E, sPath = dir, site_id = "")
+#'cdsDownload(U_ID = user, API_Key = key, lat = N, lon = E, sPath = dir, site_id = "")
 #'
 #'@export
 cdsDownload <- function(U_ID, API_Key, lat, lon, sPath, site_id = ""){

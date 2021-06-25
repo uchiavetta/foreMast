@@ -4,7 +4,7 @@
 
 
 
-This package is a tool that can be used to forecast masting events of European beech (Fagus sylvatica L.) based on climatic cues
+This package is a tool that can be used to forecast masting events of European beech (*Fagus sylvatica L.*) based on climatic cues
 
 ## Installation
 The package can be installed typing:

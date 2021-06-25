@@ -3,9 +3,9 @@
 #' cdsDownload, mastFaSyl, mastPlot.
 #'
 #' @section Foo functions:
-#' The foo functions ...
+#' cdsDwonload()
+#' mastFaSyl()
+#' mastPlot()
 #'
 #' @docType package
 #' @name foreMast
-NULL
-#> NULL

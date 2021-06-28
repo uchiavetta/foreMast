@@ -26,6 +26,7 @@ reported in the file name}
 Create a .nc file, containing the mean temperature and precipitation records of a defined location,
 downloaded from the ECMFWR "ERA-5 Land monthly averaged data", via the Copernicus CDS API.
 Before using, the registration to the Copernicus CDS site is required (https://cds.climate.copernicus.eu/#!/home)
+as well as the acceptance of the terms and conditions here: https://cds.climate.copernicus.eu/cdsapp/#!/terms/licence-to-use-copernicus-products.
 }
 \examples{
 
@@ -36,6 +37,6 @@ N <- 44.3
 E <- 11.2
 dir <- "~/download"
 
-cdsDownload(U_ID = user, API_KEY = key, lat = N, lon = E, sPath = dir, site_id = "")
+cdsDownload(U_ID = user, API_Key = key, lat = N, lon = E, sPath = dir, site_id = "")
 
 }

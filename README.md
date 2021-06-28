@@ -28,7 +28,7 @@ E = 11.3 #for southing and westing coordinates use negative values
 siteId = "siteName" #it will be attached to the name of the file to be downloaded, along with the user id
 dir = "~/download" #insert the path for the directory where the file should be downloaded
 
-cdsDownload(U_ID = user, API_KEY = key, lat = N, lon = E, sPath = dir, site_id = "")
+cdsDownload(U_ID = user, API_Key = key, lat = N, lon = E, sPath = dir, site_id = "")
 ```
 After that, a file with the NetCDF extension (.nc) will be saved in the directory passed as parameter, containing all the neded data.
 

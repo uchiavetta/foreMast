@@ -26,7 +26,10 @@
 #'
 #'@export
 cdsDownload <- function(U_ID, API_Key, lat, lon, sPath, site_id = ""){
-  warning("Check the download request progress at https://cds.climate.copernicus.eu/cdsapp#!/yourrequests")
+  cat("\n")
+  cat("Check the download request progress at https://cds.climate.copernicus.eu/cdsapp#!/yourrequests")
+  cat("\n")
+  cat("\n")
   dir.create(sPath, showWarnings = F)
   ecmwfr::wf_set_key(user = U_ID, key = API_Key, service = 'cds')
   start.year = 1981

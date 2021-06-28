@@ -16,7 +16,9 @@ Returns the plot with a line chart of the predicted mast event probability
 Plot the calculated mast probability on a line chart.
 }
 \examples{
-data <- mastFaSyl("inst/85930_t2p_tp.nc")
+\dontrun{
+data <- mastFaSyl("39434_t2p_tp.nc")
 finalPlot <- mastPlot(data)
+}
 
 }

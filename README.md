@@ -15,7 +15,7 @@ devtools::install_github("uchiavetta/foreMast")
 ## Functions
 The package is composed by three functions:
 
-### a) cdsDownload(U_ID, API_KEY, lat, lon, sPath, site_id = "")
+### a) cdsDownload(U_ID, API_Key, lat, lon, sPath, site_id = "")
 This function allow to download the data of the monthly average temperatures and total precipitations, from 1981 to the current date. The data come from the "ERA5-Land monthly averaged data from 1981 to present". They are downloaded via the Copernicus CDS API, therefore the registration is required https://cds.climate.copernicus.eu/#!/home.
 Before you can download any data you have to make sure to accept the terms and conditions here: 
 https://cds.climate.copernicus.eu/cdsapp/#!/terms/licence-to-use-copernicus-products.

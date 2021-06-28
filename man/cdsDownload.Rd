@@ -29,8 +29,6 @@ Before using, the registration to the Copernicus CDS site is required (https://c
 as well as the acceptance of the terms and conditions here: https://cds.climate.copernicus.eu/cdsapp/#!/terms/licence-to-use-copernicus-products.
 }
 \examples{
-
-
 user <- "39434" #fake not working user id
 key <- "0683788m-2136-2716-61g9-g4b97f8e4l1b" #fake not working key
 N <- 44.3

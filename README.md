@@ -9,7 +9,9 @@ This package is a tool that can be used to forecast masting events of European b
 ## Installation
 The package can be installed typing:
 ```r
-devtools::install_github("uchiavetta/foreMast")
+# install.packages(devtools) #uncomment if you need to install devtools pkg
+library(devtools)
+devtools::install_github("uchiavetta/foreMast", build_vignettes = F, upgrade = F)
 ```
 
 ## Functions
@@ -21,6 +23,7 @@ Before you can download any data you have to make sure to accept the terms and c
 https://cds.climate.copernicus.eu/cdsapp/#!/terms/licence-to-use-copernicus-products.
 On the user page, the UID and API Key are reported, which are needed as parameters for the function that works as follow:
 ```r
+library(foreMast)
 user = "xxxxx" 
 key = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" #use the UID and the API key in your Copernicus CDS User profile
 N = 43.2 
@@ -36,6 +39,7 @@ After that, a file with the NetCDF extension (.nc) will be saved in the director
 This function is the core of the package and contains the algorithm that calculate the mast probability, given the downloaded file with the climate cues, returning as output a table with one column containing the year series and a second one with the predicted probability (calculated as percent rank):
 
 ```r
+# library(foreMast)
 data = "~/download/xxxxx_siteName_t2p_tp.nc"
 mast = mastFaSyl(fName = data)
 ```
@@ -46,7 +50,8 @@ This third function takes the previous function output and plots it returning a 
 3. a darkgreen one for the values that go from 0.75 and 1 (high/very high large seed production probability).
 
 ```r
-mast = mastFaSyl(fName = data)
+# library(foreMast)
+# mast = mastFaSyl(fName = data)
 chart = mastPlot(prediction = mast)
 plot(chart)
 ```

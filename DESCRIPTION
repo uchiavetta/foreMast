@@ -29,7 +29,13 @@ Imports:
     stats,
     stringr
 Suggests: 
+<<<<<<< HEAD
+    rmarkdown,
+    knitr,
+=======
     knitr, 
     rmarkdown,
+>>>>>>> 5543e90dc1edacd199e6c05a8d193dc3d09f3d3c
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+VignetteBuilder: knitr

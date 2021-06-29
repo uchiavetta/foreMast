@@ -25,7 +25,7 @@ Once these requirements have been fulfilled, it is possible to use the service t
 The `cdsDownload()` function leans on the ecmwfr package (https://github.com/bluegreen-labs/ecmwfr), which connects the user to the CDS server by using the **id** and **key** on the user page(https://cds.climate.copernicus.eu/user/), via the Copernicus API. 
 
 First, the function checks if there exists the directory given as parameter, creating one if there is not:
-```{R}
+```{r, eval = F}
  dir.create(sPath, showWarnings = F)
 ```
 
@@ -34,7 +34,7 @@ Then, using the ecmwfr function ```wf_set_key()```
 
 
 The first part regards the construction of a list of the variables required by the service to download the data, which is converted from the API python code into R:
-```{r}
+```{r, eval = F}
 request <- list(
     format = "netcdf",
     product_type = "monthly_averaged_reanalysis",
@@ -49,7 +49,7 @@ request <- list(
 ```
 
 ```year``` and ```month``` receives two lists created automatically before the construction of the request list by setting the starting year to ```1981``` and the ending year to the current one:
-```{r}
+```{r, eval = F}
  start.year = 1981
   end.year = format(Sys.time(), "%Y")
   yearL = as.character(start.year:end.year)

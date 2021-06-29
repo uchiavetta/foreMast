@@ -4,7 +4,7 @@ author: "Ugo Chiavetta and Sebastian Marzini"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Download nc files from CDS with cdsDownload()}
+  %\VignetteIndexEntry{Download_nc_files_from_CDS_with_cdsDownload()}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,6 +15,21 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+
+## 1.Create an account in Copernicu Climate Data Store 
+
+Before downloading the nc file, the registration to the Copernicus CDS site is required (https://cds.climate.copernicus.eu/#!/home). After that be sure to accept  terms and conditions here: https://cds.climate.copernicus.eu/cdsapp/#!/terms/licence-to-use-copernicus-products while you are logged in.
+}
+\examples{
+\dontrun{
+user_id <- "39434" #example not working user id
+user_key <- "0683788m-2136-2716-61g9-g4b97f8e4l1b" #example not working key
+N <- 44.3
+E <- 11.2
+dir <- getwd()
+cdsDownload(U_ID = user_id, API_Key = user_key, lat = N, lon = E, sPath = dir, site_id = "")
+}
 
 Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 

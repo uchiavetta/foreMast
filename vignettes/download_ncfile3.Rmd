@@ -1,0 +1,98 @@
+---
+title: "Download nc files from CDS with cdsDownload()"
+author: "Ugo Chiavetta and Sebastian Marzini"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Download nc files from CDS with cdsDownload()}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# climate data download with cdsDownload():
+this function allows to download the climate data from the Copernicus CDS service by first following these two main procedures:
+ + Registering at the Copernicus CDS API service (https://cds.climate.copernicus.eu/#!/home);
+ + Accepting the terms and conditions (https://cds.climate.copernicus.eu/cdsapp/#!/terms/licence-to-use-copernicus-products);
+Once these requirements have been fulfilled, it is possible to use the service to download the files that are needed. 
+
+The `cdsDownload()` function leans on the ecmwfr package (https://github.com/bluegreen-labs/ecmwfr), which connects the user to the CDS server by using the **id** and **key** on the user page(https://cds.climate.copernicus.eu/user/), via the Copernicus API. 
+
+First, the function checks if there exists the directory given as parameter, creating one if there is not:
+```{R}
+ dir.create(sPath, showWarnings = F)
+```
+
+Then, using the ecmwfr function ```wf_set_key()```
+
+
+
+The first part regards the construction of a list of the variables required by the service to download the data, which is converted from the API python code into R:
+```{r}
+request <- list(
+    format = "netcdf",
+    product_type = "monthly_averaged_reanalysis",
+    variable = c("2m_temperature", "total_precipitation"),
+    year = yearL,
+    month = monthL,
+    time = "00:00",
+    area = c(lat, lon, lat, lon),
+    dataset_short_name = "reanalysis-era5-land-monthly-means",
+    target = paste0(U_ID, "_", site_id, "_t2s_tp.nc")
+  )
+```
+
+```year``` and ```month``` receives two lists created automatically before the construction of the request list by setting the starting year to ```1981``` and the ending year to the current one:
+```{r}
+ start.year = 1981
+  end.year = format(Sys.time(), "%Y")
+  yearL = as.character(start.year:end.year)
+  monthL = stringr::str_pad(1:12, 2, pad = "0")
+```
+
+
+
+
+
+
+```{r}
+cdsDownload <- function(U_ID, API_Key, lat, lon, sPath, site_id = ""){
+  cat("\n")
+  cat("Check the download request progress at https://cds.climate.copernicus.eu/cdsapp#!/yourrequests")
+  cat("\n")
+  cat("\n")
+  # the function checks if the directory for saving the files, given using the sPath argument, exists and if not, it creates it.
+  dir.create(sPath, showWarnings = F)
+  # this function connects the user to the CDS service.
+  ecmwfr::wf_set_key(user = U_ID, key = API_Key, service = 'cds')
+  # the starting year for the download of the data is set to the first one available (1981) while the ending year is the current one. In this way, a years list and a months list are created, which will be given as parameters in the request list.
+  start.year = 1981
+  end.year = format(Sys.time(), "%Y") #Current year
+  yearL = as.character(start.year:end.year)
+  monthL = stringr::str_pad(1:12, 2, pad = "0")
+  # the request list is created by converting the python based string in the CDinto a R one
+  request <- list(
+    format = "netcdf",
+    product_type = "monthly_averaged_reanalysis",
+    variable = c("2m_temperature", "total_precipitation"),
+    year = yearL,
+    month = monthL,
+    time = "00:00",
+    area = c(lat, lon, lat, lon),
+    dataset_short_name = "reanalysis-era5-land-monthly-means",
+    target = paste0(U_ID, "_", site_id, "_t2s_tp.nc")
+  )
+  file <- ecmwfr::wf_request(
+    user = U_ID,
+    request = request,
+    transfer = TRUE,
+    path = sPath,
+  )
+}
+```

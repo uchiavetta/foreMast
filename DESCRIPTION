@@ -19,6 +19,7 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+VignetteBuilder: knitr
 Imports: 
     dplyr,
     ecmwfr,
@@ -28,5 +29,7 @@ Imports:
     stats,
     stringr
 Suggests: 
+    knitr, 
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

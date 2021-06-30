@@ -1,0 +1,106 @@
+---
+title: "Seed production probability calculation and result plot"
+author: "Ugo Chiavetta and Sebastian Marzini"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Seed production probability calculation and result plot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(foreMast)
+```
+
+
+## 1.Seed production calculation
+
+The `mastFaSyl` function calculates the probabilty of beech seed production for a given site, taking a NetCDF file (or a list of them) downloaded with the `cdsDownload` function or already present in a directory.
+
+At the beginning, the .nc file is opened using the necdf4 package's function `nc_open` and a list of year is defined, starting from 1981 and ending in the current year, which will be used for later operations:
+
+```{r, eval = F}
+nc <- ncdf4::nc_open(fName)
+year.list = list(1981:format(Sys.time(), "%Y"))
+```
+
+Successively, for each climatic variable, the summer mean is calculated (June/July/August) over the series of years set before, obtaining a temperature and precipitation time series:
+
+```{r, eval = F}
+# temperature and precipitation values are converted from K to °C and from m to mm rispectively
+t2m <- stats::ts(ncdf4::ncvar_get(nc, varid= "t2m" )-273.15, frequency = 12,
+                   start = c(as.numeric(year.list[[1]][1]), 1))
+tp <- stats::ts(ncdf4::ncvar_get(nc, varid= "tp" )*1000, frequency = 12)
+
+# the time series are converted into data frame format and for each year the summer mean is calculated
+Tmean.df <- data.frame(stats::.preformat.ts(t2m),stringsAsFactors = FALSE) 
+Tmean.s <- t <- (as.numeric(Tmean.df$Jun) + as.numeric(Tmean.df$Jul) + as.numeric(Tmean.df$Aug))/3
+P.df <- data.frame(stats::.preformat.ts(tp),stringsAsFactors = FALSE)
+P.s <- p <- (as.numeric(P.df$Jun) + as.numeric(P.df$Jul) + as.numeric(P.df$Aug))/3
+```
+
+Once the series are ready, the seed production is calculated as follow:
+
+```{r, eval = F}
+ffst0 <- function(t, p, hist.p=NULL, wt=3, wp=1, wsp = 0.5){
+    syear = 1981
+    if(length(t)!=length(p)){
+      options(error = NULL)
+      stop("Error: t and p must have same length")
+    } else {
+      st1 <- (wt*(dplyr::percent_rank(dplyr::lag(t,0)))+wp*(1-dplyr::percent_rank(dplyr::lag(p,0))))/(wp+wt)
+      st2 <- (wt*(1-dplyr::percent_rank(dplyr::lag(t,1)))+wp*(dplyr::percent_rank(dplyr::lag(p,1))))/(wp+wt)
+      st0 <- round((st2+st1)/2,2)
+      sp <- (1-(dplyr::percent_rank(dplyr::lag(c(st0,0.5), 1)))[-1]^2)
+      st0p <- round(dplyr::percent_rank((st2+st1+wsp*sp)/(2+wsp)),2)
+      years <- (syear+2):(syear+length(t))
+      return(data.frame('Year' = as.character(years), 'prob' = (st0p[-1])))
+    }
+
+  }
+```
+
+where `t` and `p` are the time series, `wt`, `wp`, and `wsp` are the weights of the temperature, precipitation and autocorrelation.
+The function `ffst0` calculates the percent rank of the climate variables in the two years before the year to be predicted, in relation to the weight of the climate cues and to an autocorrelation factor. As result, it returns a data frame with a column for the years and a second one with the seed production probability (calculated as percent rank):
+
+```
+ year | prob
+ -----|-----
+ ...  | ...
+ 2018 | 0.70
+ 2019 | 0.23
+ 2020 | 0.74
+ 2021 | 0.27
+ ```
+ 
+ ## 2.Data plotting
+ 
+In the end, the data frame is returned and passed to the `mastPlot` function that plots the results as a line chart:
+
+```{r, eval = F}
+  Year <- prob <- NULL
+  mast_plot <- ggplot2::ggplot(prediction, ggplot2::aes(x = Year, y = prob, group = 1)) +
+    ggplot2::geom_point() +
+    ggplot2::geom_line(color = "red") +
+    # the chart space is divided in the strips in relation to the probability value
+    ggplot2::annotate('rect', xmin = -Inf, xmax = Inf, ymin = .75, ymax = 1, alpha = .2, fill = 'darkgreen') +
+    ggplot2::annotate('rect', xmin = -Inf, xmax = Inf, ymin = .5, ymax = .75, alpha = .2, fill = 'green') +
+    ggplot2::annotate('rect', xmin = -Inf, xmax = Inf, ymin = 0, ymax = .5, alpha = .2, fill = 'lightgreen') +
+    ggplot2::ggtitle('Yearly mast event probability') +
+    ggplot2::theme_bw() %+replace% 
+    ggplot2::theme(text = ggplot2::element_text(size=10),
+                   axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, size= 9))
+```
+
+![](C:/Users/Seba_/Documents/foreMast/inst/examplot.png){width=400}
+
+
+

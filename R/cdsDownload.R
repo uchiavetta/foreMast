@@ -21,7 +21,6 @@
 #' user_key <- "0683788m-2136-2716-61g9-g4b97f8e4l1b" #example not working key
 #' N <- 44.3
 #' E <- 11.2
-#' dir <- "~/download"
 #
 #' cdsDownload(U_ID = user_id, API_Key = user_key, lat = N, lon = E, sPath = dir, site_id = "")
 #'}

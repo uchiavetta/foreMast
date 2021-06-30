@@ -1,5 +1,5 @@
 ---
-title: "Download nc files from CDS with cdsDownload()"
+title: "Download_nc_files_from_CDS_with_cdsDownload()"
 author: "Ugo Chiavetta and Sebastian Marzini"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

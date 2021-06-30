@@ -29,7 +29,6 @@ key = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" #use the UID and the API key in you
 N = 43.2 
 E = 11.3 #for southing and westing coordinates use negative values
 siteId = "siteName" #it will be attached to the name of the file to be downloaded, along with the user id
-dir = "~/download" #insert the path for the directory where the file should be downloaded
 
 cdsDownload(U_ID = user, API_Key = key, lat = N, lon = E, sPath = dir, site_id = "")
 ```

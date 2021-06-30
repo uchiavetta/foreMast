@@ -1,10 +1,10 @@
 ---
-title: "Download.nc.files.from.CDS.with.cdsDownload()"
+title: "Download NetCDF files from CDS with cdsDownload()"
 author: "Ugo Chiavetta and Sebastian Marzini"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Download.nc.files.from.CDS.with.cdsDownload()}
+  %\VignetteIndexEntry{Download NetCDF files from CDS with cdsDownload()}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,66 +19,68 @@ knitr::opts_chunk$set(
 
 ## 1.Create an account in Copernicus Climate Data Store 
 
-Before downloading the nc file, the registration to the Copernicus CDS site is required (https://cds.climate.copernicus.eu/#!/home). After that be sure to accept  terms and conditions here: https://cds.climate.copernicus.eu/cdsapp/#!/terms/licence-to-use-copernicus-products while you are logged in.
+Before downloading the nc file, the registration to the Copernicus CDS site is required (https://cds.climate.copernicus.eu/#!/home). After that be sure to have accepted the terms and conditions here: https://cds.climate.copernicus.eu/cdsapp/#!/terms/licence-to-use-copernicus-products while you are logged in.
 
-After logging in, click on your name in the top right corner, scroll the page and take note of 
-'UID' and 'API Key'. Then run the code below
+After logged in, click on your name in the top right corner, scroll the page and take note of 
+'UID' and 'API Key'. Then, run the code below:
 
 ```{r variables_needed, eval=FALSE}
 user_id <- "XXXXX" #change XXXXX with your UID 
 user_key <- "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" #change XXXXX with your API Key 
 N <- 44.3 #try to put known latitude
 E <- 11.2 #try to put known longitude
-dir <- getwd()
-cdsDownload(U_ID = user_id, API_Key = user_key, lat = N, lon = E, sPath = dir, site_id = "")
+cdsDownload(U_ID = user_id, API_Key = user_key, lat = N, lon = E, sPath = getwd(), site_id = "")
 
 ```
 
+## 2.Download the data
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+Once the variables to be passed to the `cdsDownload` function are set, data will be downloaded after few passages:
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
-
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r, eval = F}
+dir.create(sPath, showWarnings = F)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+First, the function checks if the directory given as parameter exists, if not it creates it. Without any specification, the directory used to save the downloaded file(s) will be given with `getwd()`.
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+Then, the `U_ID` and `API_Key` will be passed to the ecmwfr function `wf_set_key` in order to connect the user to the cds service:
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```{r, eval = F}
+ecmwfr::wf_set_key(user = U_ID, key = API_Key, service = 'cds')
 ```
 
-Also a quote using `>`:
+In the second part, the time-related parameters are set, defining the list of years and months for which we want to download the data. The starting date is the first available in the dataset, while the ending one is the most current:
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+```{r, eval = F}
+start.year = 1981
+end.year = format(Sys.time(), "%Y")
+yearL = as.character(start.year:end.year)
+monthL = stringr::str_pad(1:12, 2, pad = "0")
+```
+
+Successively, the request list (converted from *python* to *R*) is created. The target file will be named automatically with the user id and the site id of the area of interest (if given as parameter)
+
+```{r, eval = F}
+ request <- list(
+    format = "netcdf",
+    product_type = "monthly_averaged_reanalysis",
+    variable = c("2m_temperature", "total_precipitation"),
+    year = yearL,
+    month = monthL,
+    time = "00:00",
+    area = c(lat, lon, lat, lon),
+    dataset_short_name = "reanalysis-era5-land-monthly-means",
+    target = paste0(U_ID, "_", site_id, "_t2s_tp.nc")
+  )
+```
+
+Finally, using the ecmwfr `wf_request` function the data are downloaded and saved:
+
+```{r, eval = F}
+file <- ecmwfr::wf_request(
+    user = U_ID,
+    request = request,
+    transfer = TRUE,
+    path = sPath,
+  )
+```

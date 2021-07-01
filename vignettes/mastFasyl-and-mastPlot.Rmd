@@ -74,7 +74,7 @@ The function `ffst0` calculates the percent rank of the climate variables in the
 ```{eval = F}
  year | prob
  -----|-----
- ...  | ...
+ 1983 | 0.88
  2018 | 0.70
  2019 | 0.23
  2020 | 0.74
@@ -101,6 +101,3 @@ In the end, the data frame is returned and passed to the `mastPlot` function tha
 ```
 
 ![](C:/Users/Seba_/Documents/foreMast/inst/examplot.png){width=400}
-
-
-

@@ -112,10 +112,11 @@ user_key <- "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" #change XXXXX with your API K
 
 for(i in seq(1:nrow(data))){
   cdsDownload(U_ID = user_id,
-               API_Key = user_key,
-               lat = data$Lat[i],
-               lon = data$Lon[i],
-               ID = data$id[i])
+              API_Key = user_key,
+              lat = data$Lat[i],
+              lon = data$Lon[i],
+              ID = data$id[i],
+              sPath = getwd())
 }
 
 # in this way, in the working directory (sPath is set to getwd()) we will find 

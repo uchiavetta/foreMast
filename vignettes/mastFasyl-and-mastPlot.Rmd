@@ -71,7 +71,7 @@ ffst0 <- function(t, p, hist.p=NULL, wt=3, wp=1, wsp = 0.5){
 where `t` and `p` are the time series, `wt`, `wp`, and `wsp` are the weights of the temperature, precipitation and autocorrelation.
 The function `ffst0` calculates the percent rank of the climate variables in the two years before the year to be predicted, in relation to the weight of the climate cues and to an autocorrelation factor. As result, it returns a data frame with a column for the years and a second one with the seed production probability (calculated as percent rank):
 
-```
+```{ eval = F}
  year | prob
  -----|-----
  ...  | ...
@@ -79,7 +79,7 @@ The function `ffst0` calculates the percent rank of the climate variables in the
  2019 | 0.23
  2020 | 0.74
  2021 | 0.27
- ```
+```
  
  ## 2.Data plotting
  

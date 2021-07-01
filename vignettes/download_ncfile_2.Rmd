@@ -84,3 +84,43 @@ file <- ecmwfr::wf_request(
     path = sPath,
   )
 ```
+
+## 3.Downloading multiple data b
+
+Climate data can be also downloaded by using coordinates in a data frame, therefore downloading various files consequently:
+
+```{R, eval = T}
+
+# random data frame with the ID of the plots and with the respective latitute and longitude, expressed in decimal degrees
+
+data <- data.frame(id = c("plot_A", "plot_B", "plot_C", "plot_D", "plot_E"),
+                   Lon = c(48.78, 46.52, 48.21, 47.05, 47.18),
+                   Lat = c(11.25, -3.32, 5.78, 8.54, -2.8))
+
+knitr::kable(data, col.names = names(data))
+
+```
+```{R, eval = F}
+# once we have defined our data frame, we set the parameters to run the cdsDownload
+# function as described in the beginning
+
+user_id = user_id <- "XXXXX" #change XXXXX with your UID 
+user_key <- "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" #change XXXXX with your API Key 
+
+# now it is possible to use a for loop to run the cdsDownload function for every element 
+# of the data frame
+
+for(i in seq(1:nrow(data))){
+  cdsDownload(U_ID = user_id,
+               API_Key = user_key,
+               lat = data$Lat[i],
+               lon = data$Lon[i],
+               ID = data$id[i])
+}
+
+# in this way, in the working directory (sPath is set to getwd()) we will find 
+# all the downloaded data. The cds service can download only one file at time 
+# and while it does it is not possible to do other operations in the current
+# RStudio sesssion. 
+```
+

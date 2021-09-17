@@ -11,11 +11,11 @@
 #' @examples
 #' \dontrun{
 #' data <- mastFaSyl("39434_t2p_tp.nc")
-#' finalPlot <- mastPlot(data)
+#' finalPlot <- probPlot(data)
 #' }
 #'
 #' @export
-mastPlot <- function(prediction){
+probPlot <- function(prediction){
   Year <- prob <- NULL
   mast_plot <- ggplot2::ggplot(prediction, ggplot2::aes(x = Year, y = prob, group = 1)) +
     ggplot2::geom_point() +

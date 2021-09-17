@@ -36,7 +36,7 @@ cdsDownload <- function(U_ID, API_Key, lat, lon, sPath = getwd(), site_id = ""){
   end.year = format(Sys.time(), "%Y") #Current year
   yearL = as.character(start.year:end.year)
   monthL = stringr::str_pad(1:12, 2, pad = "0")
-  #selezione dei parametri e delle variabili d'interesse
+  # selection of the parameters of interest
   request <- list(
     format = "netcdf",
     product_type = "monthly_averaged_reanalysis",

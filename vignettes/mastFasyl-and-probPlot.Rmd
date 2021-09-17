@@ -83,7 +83,7 @@ The function `ffst0` calculates the percent rank of the climate variables in the
  
  ## 2.Data plotting
  
-In the end, the data frame is returned and passed to the `mastPlot` function that plots the results as a line chart:
+In the end, the data frame is returned and passed to the `probPlot` function that plots the results as a line chart:
 
 ```{r, eval = F}
   Year <- prob <- NULL

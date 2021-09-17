@@ -4,7 +4,7 @@
 \alias{mastFaSyl}
 \title{Beech mast probability calculation}
 \usage{
-mastFaSyl(fName, lat = NULL, lon = NULL)
+mastFaSyl(fName, lat = NULL, lon = NULL, autoWeights = "")
 }
 \arguments{
 \item{fName}{The name of the netCDF file to be loaded or the csv file with the climate data.
@@ -15,6 +15,10 @@ You can name the columns as you whish, but the column order must mandatorily fol
 \item{lat}{Only when loading the csv. It is the latitude of the location from where the data were gathered}
 
 \item{lon}{Only when loading the csv. It is the longitude of the location from where the data were gathered}
+
+\item{autoWeights}{Y or N: if Y, the weights used to calculate the mast probability are those of the nearest
+point to the one of interest; if N, the weights used are those that best fit on average among all the field
+data observed in comparison to the forecast made using the mastFaSyl function (wt = 3 and wt = 1).}
 }
 \value{
 The function returns a table with 2 columns, the first one with the years and the second one with

@@ -12,6 +12,10 @@
 #'
 #' @param lon Only when loading the csv. It is the longitude of the location from where the data were gathered
 #'
+#' @param autoWeights Y or N: if Y, the weights used to calculate the mast probability are those of the nearest
+#' point to the one of interest; if N, the weights used are those that best fit on average among all the field
+#' data observed in comparison to the forecast made using the mastFaSyl function (wt = 3 and wt = 1).
+#'
 #' @return The function returns a table with 2 columns, the first one with the years and the second one with
 #' the associated probability of the mast event
 #'
@@ -21,7 +25,7 @@
 #' }
 #'
 #' @export
-mastFaSyl <- function(fName, lat = NULL, lon = NULL){
+mastFaSyl <- function(fName, lat = NULL, lon = NULL, autoWeights = ""){
 
   distanceFromPoint <- NULL
   # dataset with the data of the Mastree points
@@ -113,8 +117,17 @@ mastFaSyl <- function(fName, lat = NULL, lon = NULL){
   # nearest point
   min.distance <- dplyr::filter(bind.df, distanceFromPoint == min(distanceFromPoint))
 
-  # application of the function to calculate mast using as wt and wp the wheights of the nearest point
-  st0s <- ffst0(t=t, p=p, start.year = start.year, wt=min.distance$b_wt, wp=min.distance$b_wp)
+  if(is.null(autoWeights)){
+    stop("Error: please insert Y for the automatic weights or N for those of the nearest point")
+  }
+  else if(autoWeights == "Y"){
+    # application of the function to calculate mast using as wt and wp the best weights auto-combination
+    st0s <- ffst0(t=t, p=p, start.year = start.year, wt=3, wp=1)
+  }
+  else{
+    # application of the function to calculate mast using as wt and wp the wheights of the nearest point
+    st0s <- ffst0(t=t, p=p, start.year = start.year, wt=min.distance$b_wt, wp=min.distance$b_wp)
+  }
 
   return(st0s)
 }

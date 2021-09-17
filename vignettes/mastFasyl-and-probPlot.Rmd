@@ -23,35 +23,64 @@ library(foreMast)
 
 ## 1.Seed production calculation
 
-The `mastFaSyl` function calculates the probabilty of beech seed production for a given site, taking a NetCDF file (or a list of them) downloaded with the `cdsDownload` function or already present in a directory.
+The `mastFaSyl` function calculates the probabilty of beech seed production for a given site, taking a NetCDF file (or a list of them) downloaded with the `cdsDownload` function or already present in a directory, or a csv with data of a specific location. In the last case, the latitude and the longitude of the site from where the observations have been recorded mus be passed as parameters in the function. 
+IMPORTANT: the csv file must have 3 columns with this order: 
+- column 1: list of years of the observations;
+- column 2: mean summer temperatures calculated with those of June, July and August;
+- column 3: mean summer precipitation calculated as before
+Remind that it is not important the name of the column but the order.
 
-At the beginning, the .nc file is opened using the necdf4 package's function `nc_open` and a list of year is defined, starting from 1981 and ending in the current year, which will be used for later operations:
+At the beginning, the function check if the file loaded is a `nc` file or a `csv`: in the first case the .nc file is opened using the necdf4 package's function `nc_open`. The coordinates are extracted and a list of year is defined (starting from the first available year in the records and ending in the current year) which will be used for later operations:
 
 ```{r, eval = F}
 nc <- ncdf4::nc_open(fName)
-year.list = list(1981:format(Sys.time(), "%Y"))
+data.years <- ncdf4::ncvar_get(nc,"time")
+lat <- base::round(ncdf4::ncvar_get(nc, "latitude"), 2)
+lon <- base::round(ncdf4::ncvar_get(nc, "longitude"), 2)
+
+# this function extracts the time from the nc file, converting it from seconds-from-1900 to year
+conversion <- function(x){
+  converted <- base::floor((x/24)/365)
+  converted <- converted + 1900
+}
+
+data.year <- base::lapply(data.years, conversion)
+start.year <- data.year[[1]]
 ```
 
 Successively, for each climatic variable, the summer mean is calculated (June/July/August) over the series of years set before, obtaining a temperature and precipitation time series:
 
 ```{r, eval = F}
-# temperature and precipitation values are converted from K to °C and from m to mm rispectively
+# time series of the climate variables
 t2m <- stats::ts(ncdf4::ncvar_get(nc, varid= "t2m" )-273.15, frequency = 12,
-                   start = c(as.numeric(year.list[[1]][1]), 1))
+                 start = c(as.numeric(start.year, 1)))
 tp <- stats::ts(ncdf4::ncvar_get(nc, varid= "tp" )*1000, frequency = 12)
 
-# the time series are converted into data frame format and for each year the summer mean is calculated
-Tmean.df <- data.frame(stats::.preformat.ts(t2m),stringsAsFactors = FALSE) 
+Tmean.df <- data.frame(stats::.preformat.ts(t2m), stringsAsFactors = FALSE) # from time series to data frame
 Tmean.s <- t <- (as.numeric(Tmean.df$Jun) + as.numeric(Tmean.df$Jul) + as.numeric(Tmean.df$Aug))/3
+
 P.df <- data.frame(stats::.preformat.ts(tp),stringsAsFactors = FALSE)
 P.s <- p <- (as.numeric(P.df$Jun) + as.numeric(P.df$Jul) + as.numeric(P.df$Aug))/3
+```
+
+If the file passed through `fName` is a csv, lat and lon paramters are checked in order to see if they have been passed to the function. If they have, the years, temperatures and precipitations are extracted similarly as for the nc file, in order to be used to calculate the seed production probability:
+
+```{r, eval = F}
+if(is.null(lat) | is.null(lon)){
+      stop("Error: please insert lat and lon")
+    } else {
+      climateDf <- utils::read.csv(fName)
+      start.year <- min(climateDf[1])
+
+      t <- climateDf[2][1:nrow(climateDf), ]
+      p <- climateDf[3][1:nrow(climateDf), ]
+    }
 ```
 
 Once the series are ready, the seed production is calculated as follow:
 
 ```{r, eval = F}
-ffst0 <- function(t, p, hist.p=NULL, wt=3, wp=1, wsp = 0.5){
-    syear = 1981
+ffst0 <- function(t, p, start.year, wt=NULL, wp=NULL, wsp = 0.5){
     if(length(t)!=length(p)){
       options(error = NULL)
       stop("Error: t and p must have same length")
@@ -69,7 +98,11 @@ ffst0 <- function(t, p, hist.p=NULL, wt=3, wp=1, wsp = 0.5){
 ```
 
 where `t` and `p` are the time series, `wt`, `wp`, and `wsp` are the weights of the temperature, precipitation and autocorrelation.
-The function `ffst0` calculates the percent rank of the climate variables in the two years before the year to be predicted, in relation to the weight of the climate cues and to an autocorrelation factor. As result, it returns a data frame with a column for the years and a second one with the seed production probability (calculated as percent rank):
+To calculate wt and wp there are two options:
+1) if `autoWeights` is `Y`, a csv file is read, which contains the data for a series of sites of which there are available records of the production of seed. This data frame includes the id of the sites, the coordinates and the best wp and wt obtained comparing the observation with the forecasted probabilities by using the function mastFaSyl. Thus, a calculation of the minimum distance among the interestd point and all those of the data frame is performed and wt and wp are taken from the nearest one;
+2) if `autoWeights` is `N`, wt and wp takes the values of 3 and 1 respectively, which represents the best average combination for predicting seed production when comparing the forecasts with the field data (wt = 3 and wp = 1).
+
+Succesively, the function `ffst0` calculates the percent rank of the climate variables in the two years before the year to be predicted, in relation to the weight of the climate cues and to an autocorrelation factor. As result, it returns a data frame with a column for the years and a second one with the seed production probability (calculated as percent rank):
 
 ```{eval = F}
  year | prob

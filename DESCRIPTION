@@ -27,7 +27,8 @@ Imports:
     grDevices,
     ncdf4,
     stats,
-    stringr
+    stringr,
+    geosphere
 Suggests: 
     rmarkdown,
     knitr,

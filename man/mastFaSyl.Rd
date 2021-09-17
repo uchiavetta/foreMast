@@ -4,10 +4,17 @@
 \alias{mastFaSyl}
 \title{Beech mast probability calculation}
 \usage{
-mastFaSyl(fName)
+mastFaSyl(fName, lat = NULL, lon = NULL)
 }
 \arguments{
-\item{fName}{The name of the netCDF file to be loaded}
+\item{fName}{The name of the netCDF file to be loaded or the csv file with the climate data.
+The csv has to be composed by 3 columns, the first one with the years of the observation, the second one
+with the mean summer temperatures for each year, the last one with the mean precipitations for each year.
+You can name the columns as you whish, but the column order must mandatorily follow the instruction above!}
+
+\item{lat}{Only when loading the csv. It is the latitude of the location from where the data were gathered}
+
+\item{lon}{Only when loading the csv. It is the longitude of the location from where the data were gathered}
 }
 \value{
 The function returns a table with 2 columns, the first one with the years and the second one with
@@ -15,7 +22,7 @@ the associated probability of the mast event
 }
 \description{
 Calculate the mast probability over a time series, including the current year,
-using as input the file downloaded from the Copernicus CDS API.
+using as input the file downloaded from the Copernicus CDS API or a csv file with local data or observations.
 }
 \examples{
 \dontrun{

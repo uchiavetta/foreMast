@@ -8,31 +8,33 @@
 #' with the mean summer temperatures for each year, the last one with the mean precipitations for each year.
 #' You can name the columns as you whish, but the column order must mandatorily follow the instruction above!
 #'
-#' @param lat Only when loading the csv. It is the latitude of the location from where the data were gathered
+#' @param csv.coordinates It is an array, containing the values of latitude and longitude for the location to
+#' which the csv refers.
 #'
-#' @param lon Only when loading the csv. It is the longitude of the location from where the data were gathered
+#' @param weighting A string that states the way the weights are setted in the mast algorith:
+#' - standard: the weights used are those that best fit on average among all the field data observed in
+#' comparison to the forecast made using the mastFaSyl function (wt = 3 and wt = 1),
+#' - auto: the weights are automatically taken from those of the nearest point to the one of interest. The reference
+#' points are those of the MASTREE dataset used to compare field observation with forecasts made using the mast
+#' algorithm.
+#' - manual: the weights are manually inserted as an array of two integer, the first one for the temperature and
+#' the second one for the precipiation.
 #'
-#' @param autoWeights Y or N: if Y, the weights used to calculate the mast probability are those of the nearest
-#' point to the one of interest; if N, the weights used are those that best fit on average among all the field
-#' data observed in comparison to the forecast made using the mastFaSyl function (wt = 3 and wt = 1).
+#' @param weights Only when weighting is set to manual. It is an array with two integer, the first one with the weight
+#' to be used for the temperatures, and the second one with that for the precipitation.
 #'
 #' @return The function returns a table with 2 columns, the first one with the years and the second one with
 #' the associated probability of the mast event
 #'
 #' @examples
 #' \dontrun{
-#' mastFaSyl("39434_t2p_tc.nc")
+#' mastFaSyl("39434_t2p_tc.nc", weighting = auto)
 #' }
 #'
 #' @export
-mastFaSyl <- function(fName, lat = NULL, lon = NULL, autoWeights = ""){
+mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", weights = c(NULL, NULL)){
 
   distanceFromPoint <- NULL
-  # dataset with the data of the Mastree points
-  #mt_bioreg <- utils::read.csv("data/mastree_biogeoreg.csv")
-  mt_bioreg <- lapply(list.files(system.file('extdata', package = 'foreMast'), pattern = "csv",
-                                 full.names = TRUE), utils::read.csv)
-  mt_bioreg <- mt_bioreg[[1]]
 
   if(base::grepl("\\.nc$", fName) == TRUE){
 
@@ -64,9 +66,11 @@ mastFaSyl <- function(fName, lat = NULL, lon = NULL, autoWeights = ""){
   } else {
     # this part works when a csv file is passed to the function
 
-    if(is.null(lat) | is.null(lon)){
-      stop("Error: please insert lat and lon")
+    if(is.null(csv.coordinates)){
+      stop("Error: please insert the coordinates")
     } else {
+      lat <- csv.coordinates[1]
+      lon <- csv.coordinates[2]
       climateDf <- utils::read.csv(fName)
       start.year <- min(climateDf[1])
 
@@ -100,34 +104,45 @@ mastFaSyl <- function(fName, lat = NULL, lon = NULL, autoWeights = ""){
 
   }
 
-  ## checking for the nearest point in the Mastree dataset
-  dist.list <- list()
-  for(i in 1:nrow(mt_bioreg)){
-    dist <- geosphere::distm(c(lon, lat), c(mt_bioreg$lon[i], mt_bioreg$lat[i]), fun = geosphere::distHaversine)
-    dist.matrix <- data.frame(id = mt_bioreg$id[i], distanceFromPoint = dist, bioreg = mt_bioreg$biogeoregion[i],
-                              b_wt = mt_bioreg$auto_wt[i], b_wp = mt_bioreg$auto_wp[i])
-    dist.list[[i]] <- dist.matrix
+  if(is.null(weighting)){
+    stop("Error: please insert 'auto', 'standard', or 'manual'")
   }
-
-  bind.df <- dist.list[[1]][0, ]
-  for(j in dist.list){
-    bind.df <- rbind(bind.df, j)
-  }
-
-  # nearest point
-  min.distance <- dplyr::filter(bind.df, distanceFromPoint == min(distanceFromPoint))
-
-  if(is.null(autoWeights)){
-    stop("Error: please insert Y for the automatic weights or N for those of the nearest point")
-  }
-  else if(autoWeights == "Y"){
+  else if(weighting == "standard"){
     # application of the function to calculate mast using as wt and wp the best weights auto-combination
     st0s <- ffst0(t=t, p=p, start.year = start.year, wt=3, wp=1)
   }
-  else{
-    # application of the function to calculate mast using as wt and wp the wheights of the nearest point
+  else if(weighting == "auto"){
+    # dataset with the data of the Mastree points
+    mt_bioreg <- lapply(list.files(system.file('extdata', package = 'foreMast'), pattern = "csv",
+                                   full.names = TRUE), utils::read.csv)
+    mt_bioreg <- mt_bioreg[[1]]
+
+    ## checking for the nearest point in the Mastree dataset
+    dist.list <- list()
+    for(i in 1:nrow(mt_bioreg)){
+      dist <- geosphere::distm(c(lon, lat), c(mt_bioreg$lon[i], mt_bioreg$lat[i]), fun = geosphere::distHaversine)
+      dist.matrix <- data.frame(id = mt_bioreg$id[i], distanceFromPoint = dist, bioreg = mt_bioreg$biogeoregion[i],
+                                b_wt = mt_bioreg$auto_wt[i], b_wp = mt_bioreg$auto_wp[i])
+      dist.list[[i]] <- dist.matrix
+    }
+
+    bind.df <- dist.list[[1]][0, ]
+    for(j in dist.list){
+      bind.df <- rbind(bind.df, j)
+    }
+
+    # nearest point
+    min.distance <- dplyr::filter(bind.df, distanceFromPoint == min(distanceFromPoint))
+
     st0s <- ffst0(t=t, p=p, start.year = start.year, wt=min.distance$b_wt, wp=min.distance$b_wp)
   }
+  else{
+    if(is.null(weights)){
+      stop("Error: please insert the weights for t and p as an array")
+    } else{
+      st0s <- ffst0(t=t, p=p, start.year = start.year, wt=weights[1], wp=weights[2])
+      }
+    }
 
   return(st0s)
 }

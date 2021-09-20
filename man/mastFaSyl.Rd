@@ -4,7 +4,12 @@
 \alias{mastFaSyl}
 \title{Beech mast probability calculation}
 \usage{
-mastFaSyl(fName, lat = NULL, lon = NULL, autoWeights = "")
+mastFaSyl(
+  fName,
+  csv.coordinates = c(NULL, NULL),
+  weighting = "",
+  weights = c(NULL, NULL)
+)
 }
 \arguments{
 \item{fName}{The name of the netCDF file to be loaded or the csv file with the climate data.
@@ -12,13 +17,22 @@ The csv has to be composed by 3 columns, the first one with the years of the obs
 with the mean summer temperatures for each year, the last one with the mean precipitations for each year.
 You can name the columns as you whish, but the column order must mandatorily follow the instruction above!}
 
-\item{lat}{Only when loading the csv. It is the latitude of the location from where the data were gathered}
+\item{csv.coordinates}{It is an array, containing the values of latitude and longitude for the location to
+which the csv refers.}
 
-\item{lon}{Only when loading the csv. It is the longitude of the location from where the data were gathered}
+\item{weighting}{A string that states the way the weights are setted in the mast algorith:
+\itemize{
+\item standard: the weights used are those that best fit on average among all the field data observed in
+comparison to the forecast made using the mastFaSyl function (wt = 3 and wt = 1),
+\item auto: the weights are automatically taken from those of the nearest point to the one of interest. The reference
+points are those of the MASTREE dataset used to compare field observation with forecasts made using the mast
+algorithm.
+\item manual: the weights are manually inserted as an array of two integer, the first one for the temperature and
+the second one for the precipiation.
+}}
 
-\item{autoWeights}{Y or N: if Y, the weights used to calculate the mast probability are those of the nearest
-point to the one of interest; if N, the weights used are those that best fit on average among all the field
-data observed in comparison to the forecast made using the mastFaSyl function (wt = 3 and wt = 1).}
+\item{weights}{Only when weighting is set to manual. It is an array with two integer, the first one with the weight
+to be used for the temperatures, and the second one with that for the precipitation.}
 }
 \value{
 The function returns a table with 2 columns, the first one with the years and the second one with
@@ -30,7 +44,7 @@ using as input the file downloaded from the Copernicus CDS API or a csv file wit
 }
 \examples{
 \dontrun{
-mastFaSyl("39434_t2p_tc.nc")
+mastFaSyl("39434_t2p_tc.nc", weighting = auto)
 }
 
 }

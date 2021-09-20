@@ -133,4 +133,4 @@ In the end, the data frame is returned and passed to the `probPlot` function tha
                    axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, size= 9))
 ```
 
-![](images/examplot.png){width=400}
+![](images/examplot.png)

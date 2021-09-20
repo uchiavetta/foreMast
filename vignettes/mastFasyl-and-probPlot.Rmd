@@ -98,9 +98,12 @@ ffst0 <- function(t, p, start.year, wt=NULL, wp=NULL, wsp = 0.5){
 ```
 
 where `t` and `p` are the time series, `wt`, `wp`, and `wsp` are the weights of the temperature, precipitation and autocorrelation.
-To calculate wt and wp there are two options:
-1) if `autoWeights` is `Y`, a csv file is read, which contains the data for a series of sites of which there are available records of the production of seed. This data frame includes the id of the sites, the coordinates and the best wp and wt obtained comparing the observation with the forecasted probabilities by using the function mastFaSyl. Thus, a calculation of the minimum distance among the interestd point and all those of the data frame is performed and wt and wp are taken from the nearest one;
-2) if `autoWeights` is `N`, wt and wp takes the values of 3 and 1 respectively, which represents the best average combination for predicting seed production when comparing the forecasts with the field data (wt = 3 and wp = 1).
+To calculate wt and wp there are three options, depending on two function parameters, `weighting` and `weights`:
+1) when `weighting = "standard"`, wt and wp become 3 and 1 respectively, which is the average best weight combination 
+among all those tried comparing field data with the forecast of the algorithm;
+2) when `weighting = "auto"`, wt and wp are the best performing weights values of the nearest site belonging to the
+MASTREE dataset, used to evalute the algorithm performance in relation to the observed data in the field;
+3) when `weighting = "manual"`, the weights must be manually inserted using `weights`.
 
 Succesively, the function `ffst0` calculates the percent rank of the climate variables in the two years before the year to be predicted, in relation to the weight of the climate cues and to an autocorrelation factor. As result, it returns a data frame with a column for the years and a second one with the seed production probability (calculated as percent rank):
 
@@ -133,4 +136,4 @@ In the end, the data frame is returned and passed to the `probPlot` function tha
                    axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, size= 9))
 ```
 
-![](images/examplot.png)
+![](images/examplot.png){width=550px}

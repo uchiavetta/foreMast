@@ -23,6 +23,9 @@
 #' @param weights Only when weighting is set to manual. It is an array with two integer, the first one with the weight
 #' to be used for the temperatures, and the second one with that for the precipitation.
 #'
+#' @param adverseEvent Y/N string. It is automatically setted to N (no). If there were adverse events to masting such as
+#' late frosts or summer droughts, the parameter has to be set to Y (yes)
+#'
 #' @return The function returns a table with 2 columns, the first one with the years and the second one with
 #' the associated probability of the mast event
 #'
@@ -32,7 +35,7 @@
 #' }
 #'
 #' @export
-mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", weights = c(NULL, NULL)){
+mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", weights = c(NULL, NULL), adverseEvent = "N"){
 
   distanceFromPoint <- NULL
 
@@ -142,7 +145,12 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
     } else{
       st0s <- ffst0(t=t, p=p, start.year = start.year, wt=weights[1], wp=weights[2])
       }
-    }
+  }
+
+  # if there was an adverse event in the current year, the probaility is set to 0
+  if(adverseEvent == "Y"){
+    st0s$prob[nrow(st0s)-1] <- 0
+  }
 
   return(st0s)
 }

@@ -117,6 +117,10 @@ Succesively, the function `ffst0` calculates the percent rank of the climate var
  2021 | 0.27
 ```
  
+ Before returning the data frame, an if statement checks whether the user has inserted the parameter related to 
+ adverse events (late frost or summer drought) in the current year. If yes, the probability for the current year 
+ is set to 0.
+ 
  ## 2.Data plotting
  
 In the end, the data frame is returned and passed to the `probPlot` function that plots the results as a line chart:

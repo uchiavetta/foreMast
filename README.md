@@ -40,9 +40,9 @@ This function is the core of the package and contains the algorithm that calcula
 ```r
 # library(foreMast)
 data = "~/download/xxxxx_siteName_t2p_tp.nc"
-mast = mastFaSyl(fName = data)
+mast = mastFaSyl(fName = data, weighting = "auto")
 ```
-### c) mastPlot(prediction)
+### c) probPlot(prediction)
 This third function takes the previous function output and plots it returning a line chart divided in three main areas: 
 1. a lightgreen one for the values that go from 0 to 0.5 (low seed production probability); 
 2. a green one for the values between 0.5 and 0.75 (medium seed production probability);
@@ -50,8 +50,8 @@ This third function takes the previous function output and plots it returning a 
 
 ```r
 # library(foreMast)
-# mast = mastFaSyl(fName = data)
-chart = mastPlot(prediction = mast)
+# mast = mastFaSyl(fName = data, weighting = "auto")
+chart = probPlot(prediction = mast)
 plot(chart)
 ```
 <img src="inst/examplot.png" width="400">

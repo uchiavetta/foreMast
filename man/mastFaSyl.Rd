@@ -8,7 +8,8 @@ mastFaSyl(
   fName,
   csv.coordinates = c(NULL, NULL),
   weighting = "",
-  weights = c(NULL, NULL)
+  weights = c(NULL, NULL),
+  adverseEvent = "N"
 )
 }
 \arguments{
@@ -33,6 +34,9 @@ the second one for the precipiation.
 
 \item{weights}{Only when weighting is set to manual. It is an array with two integer, the first one with the weight
 to be used for the temperatures, and the second one with that for the precipitation.}
+
+\item{adverseEvent}{Y/N string. It is automatically setted to N (no). If there were adverse events to masting such as
+late frosts or summer droughts, the parameter has to be set to Y (yes)}
 }
 \value{
 The function returns a table with 2 columns, the first one with the years and the second one with

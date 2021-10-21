@@ -133,11 +133,10 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
       min.distance <- dplyr::filter(bind.df, distanceFromPoint == min(distanceFromPoint))
       st0s <- ffst0(t=t, p=p, start.year = start.year, wt=min.distance$b_wt, wp=min.distance$b_wp)
     }
-  }
-  else{
-    if(is.null(weights)){
-      stop("Error: please insert the weights for t and p as an array")
-    } else{
+  }else{
+    if((weighting == "manual") & (is.null(weights))){
+    stop("Error: please insert the weights for t and p as an array")
+    }else{
       st0s <- ffst0(t=t, p=p, start.year = start.year, wt=weights[1], wp=weights[2])
       }
   }

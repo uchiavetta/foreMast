@@ -68,6 +68,10 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
 
   }else{
     #this part works when a csv file is passed to the function
+
+    lat <- csv.coordinates[1]
+    lon <- csv.coordinates[2]
+
     climateDf <- utils::read.csv(fName)
     start.year <- min(climateDf[1])
 
@@ -106,12 +110,10 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
     # application of the function to calculate mast using as wt and wp the best weights auto-combination
     st0s <- ffst0(t=t, p=p, start.year = start.year, wt=3, wp=1)
   }
-  else if((weighting == "auto") & (base::grepl("\\.csv$", fName) != FALSE)){
+  else if((weighting == "auto") & (base::grepl("\\.csv$", fName) == TRUE)){
     if(is.null(csv.coordinates)){
       stop("Error: please insert the coordinates")
     } else {
-      lat <- csv.coordinates[1]
-      lon <- csv.coordinates[2]
       # dataset with the data of the Mastree points
       mt_bioreg <- lapply(list.files(system.file('extdata', package = 'foreMast'), pattern = "csv",
                                      full.names = TRUE), utils::read.csv)

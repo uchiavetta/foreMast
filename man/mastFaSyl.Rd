@@ -21,7 +21,7 @@ You can name the columns as you whish, but the column order must mandatorily fol
 \item{csv.coordinates}{It is an array, containing the values of latitude and longitude for the location to
 which the csv refers.}
 
-\item{weighting}{A string that states the way the weights are setted in the mast algorith:
+\item{weighting}{A string that states the way the weights are set in the mast algorithm:
 \itemize{
 \item standard: the weights used are those that best fit on average among all the field data observed in
 comparison to the forecast made using the mastFaSyl function (wt = 3 and wt = 1),
@@ -48,7 +48,7 @@ using as input the file downloaded from the Copernicus CDS API or a csv file wit
 }
 \examples{
 \dontrun{
-mastFaSyl("39434_t2p_tc.nc", weighting = auto)
+mastFaSyl("39434_t2p_tc.nc", weighting = standard)
 }
 
 }

@@ -11,7 +11,7 @@
 #' @param csv.coordinates It is an array, containing the values of latitude and longitude for the location to
 #' which the csv refers.
 #'
-#' @param weighting A string that states the way the weights are setted in the mast algorith:
+#' @param weighting A string that states the way the weights are set in the mast algorithm:
 #' - standard: the weights used are those that best fit on average among all the field data observed in
 #' comparison to the forecast made using the mastFaSyl function (wt = 3 and wt = 1),
 #' - auto: the weights are automatically taken from those of the nearest point to the one of interest. The reference
@@ -31,7 +31,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' mastFaSyl("39434_t2p_tc.nc", weighting = auto)
+#' mastFaSyl("39434_t2p_tc.nc", weighting = standard)
 #' }
 #'
 #' @export
@@ -56,9 +56,9 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
     start.year <- data.year[[1]]
 
     # time series of the climate variables
-    t2m <- stats::ts(ncdf4::ncvar_get(nc, varid= "t2m" )-273.15, frequency = 12,
+    t2m <- stats::ts(ncdf4::ncvar_get(nc, varid= "t2m")-273.15, frequency = 12,
                      start = c(as.numeric(start.year, 1)))
-    tp <- stats::ts(ncdf4::ncvar_get(nc, varid= "tp" )*1000, frequency = 12)
+    tp <- stats::ts(ncdf4::ncvar_get(nc, varid= "tp")*1000, frequency = 12)
 
     Tmean.df <- data.frame(stats::.preformat.ts(t2m), stringsAsFactors = FALSE) # from time series to data frame
     Tmean.s <- t <- (as.numeric(Tmean.df$Jun) + as.numeric(Tmean.df$Jul) + as.numeric(Tmean.df$Aug))/3
@@ -67,20 +67,12 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
     P.s <- p <- (as.numeric(P.df$Jun) + as.numeric(P.df$Jul) + as.numeric(P.df$Aug))/3
 
   } else {
-    # this part works when a csv file is passed to the function
+    #this part works when a csv file is passed to the function
+    climateDf <- utils::read.csv(fName)
+    start.year <- min(climateDf[1])
 
-    if(is.null(csv.coordinates)){
-      stop("Error: please insert the coordinates")
-    } else {
-      lat <- csv.coordinates[1]
-      lon <- csv.coordinates[2]
-      climateDf <- utils::read.csv(fName)
-      start.year <- min(climateDf[1])
-
-      t <- climateDf[2][1:nrow(climateDf), ]
-      p <- climateDf[3][1:nrow(climateDf), ]
-    }
-
+    t <- climateDf[2][1:nrow(climateDf), ]
+    p <- climateDf[3][1:nrow(climateDf), ]
   }
 
   # st1 is the score at t-1: it is as greater as higher is the percentile of T and lower is the percentile of P
@@ -115,29 +107,32 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
     st0s <- ffst0(t=t, p=p, start.year = start.year, wt=3, wp=1)
   }
   else if(weighting == "auto"){
-    # dataset with the data of the Mastree points
-    mt_bioreg <- lapply(list.files(system.file('extdata', package = 'foreMast'), pattern = "csv",
-                                   full.names = TRUE), utils::read.csv)
-    mt_bioreg <- mt_bioreg[[1]]
+    if(is.null(csv.coordinates)){
+      stop("Error: please insert the coordinates")
+    } else {
+      lat <- csv.coordinates[1]
+      lon <- csv.coordinates[2]
+      # dataset with the data of the Mastree points
+      mt_bioreg <- lapply(list.files(system.file('extdata', package = 'foreMast'), pattern = "csv",
+                                     full.names = TRUE), utils::read.csv)
+      mt_bioreg <- mt_bioreg[[1]]
 
-    ## checking for the nearest point in the Mastree dataset
-    dist.list <- list()
-    for(i in 1:nrow(mt_bioreg)){
-      dist <- geosphere::distm(c(lon, lat), c(mt_bioreg$lon[i], mt_bioreg$lat[i]), fun = geosphere::distHaversine)
-      dist.matrix <- data.frame(id = mt_bioreg$id[i], distanceFromPoint = dist, bioreg = mt_bioreg$biogeoregion[i],
+      ## checking for the nearest point in the Mastree dataset
+      dist.list <- list()
+      for(i in 1:nrow(mt_bioreg)){
+        dist <- geosphere::distm(c(lon, lat), c(mt_bioreg$lon[i], mt_bioreg$lat[i]), fun = geosphere::distHaversine)
+        dist.matrix <- data.frame(id = mt_bioreg$id[i], distanceFromPoint = dist, bioreg = mt_bioreg$biogeoregion[i],
                                 b_wt = mt_bioreg$auto_wt[i], b_wp = mt_bioreg$auto_wp[i])
-      dist.list[[i]] <- dist.matrix
+        dist.list[[i]] <- dist.matrix
+      }
+      bind.df <- dist.list[[1]][0, ]
+      for(j in dist.list){
+        bind.df <- rbind(bind.df, j)
+      }
+      # nearest point
+      min.distance <- dplyr::filter(bind.df, distanceFromPoint == min(distanceFromPoint))
+      st0s <- ffst0(t=t, p=p, start.year = start.year, wt=min.distance$b_wt, wp=min.distance$b_wp)
     }
-
-    bind.df <- dist.list[[1]][0, ]
-    for(j in dist.list){
-      bind.df <- rbind(bind.df, j)
-    }
-
-    # nearest point
-    min.distance <- dplyr::filter(bind.df, distanceFromPoint == min(distanceFromPoint))
-
-    st0s <- ffst0(t=t, p=p, start.year = start.year, wt=min.distance$b_wt, wp=min.distance$b_wp)
   }
   else{
     if(is.null(weights)){

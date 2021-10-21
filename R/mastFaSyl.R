@@ -66,7 +66,7 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
     P.df <- data.frame(stats::.preformat.ts(tp),stringsAsFactors = FALSE)
     P.s <- p <- (as.numeric(P.df$Jun) + as.numeric(P.df$Jul) + as.numeric(P.df$Aug))/3
 
-  } else {
+  }else{
     #this part works when a csv file is passed to the function
     climateDf <- utils::read.csv(fName)
     start.year <- min(climateDf[1])
@@ -106,7 +106,7 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
     # application of the function to calculate mast using as wt and wp the best weights auto-combination
     st0s <- ffst0(t=t, p=p, start.year = start.year, wt=3, wp=1)
   }
-  else if(weighting == "auto"){
+  else if((weighting == "auto") & (base::grepl("\\.csv$", fName) != FALSE)){
     if(is.null(csv.coordinates)){
       stop("Error: please insert the coordinates")
     } else {

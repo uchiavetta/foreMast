@@ -19,7 +19,7 @@ with the mean summer temperatures for each year, the last one with the mean prec
 You can name the columns as you whish, but the column order must mandatorily follow the instruction above!}
 
 \item{csv.coordinates}{It is an array, containing the values of latitude and longitude for the location to
-which the csv refers.}
+which the csv refers. It is needed only when using the "auto" mode in the weighting parameter.}
 
 \item{weighting}{A string that states the way the weights are set in the mast algorithm:
 \itemize{

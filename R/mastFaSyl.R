@@ -9,7 +9,7 @@
 #' You can name the columns as you whish, but the column order must mandatorily follow the instruction above!
 #'
 #' @param csv.coordinates It is an array, containing the values of latitude and longitude for the location to
-#' which the csv refers.
+#' which the csv refers. It is needed only when using the "auto" mode in the weighting parameter.
 #'
 #' @param weighting A string that states the way the weights are set in the mast algorithm:
 #' - standard: the weights used are those that best fit on average among all the field data observed in

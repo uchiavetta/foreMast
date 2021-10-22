@@ -68,15 +68,18 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
 
   }else{
     #this part works when a csv file is passed to the function
+    if(is.null(csv.coordinates)){
+      stop("Error: please insert the coordinates")
+    }else{
+      lat <- csv.coordinates[1]
+      lon <- csv.coordinates[2]
 
-    lat <- csv.coordinates[1]
-    lon <- csv.coordinates[2]
+      climateDf <- utils::read.csv(fName)
+      start.year <- min(climateDf[1])
 
-    climateDf <- utils::read.csv(fName)
-    start.year <- min(climateDf[1])
-
-    t <- climateDf[2][1:nrow(climateDf), ]
-    p <- climateDf[3][1:nrow(climateDf), ]
+      t <- climateDf[2][1:nrow(climateDf), ]
+      p <- climateDf[3][1:nrow(climateDf), ]
+    }
   }
 
   # st1 is the score at t-1: it is as greater as higher is the percentile of T and lower is the percentile of P
@@ -109,11 +112,7 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
   else if(weighting == "standard"){
     # application of the function to calculate mast using as wt and wp the best weights auto-combination
     st0s <- ffst0(t=t, p=p, start.year = start.year, wt=3, wp=1)
-  }
-  else if((weighting == "auto") & (base::grepl("\\.csv$", fName) == TRUE)){
-    if(is.null(csv.coordinates)){
-      stop("Error: please insert the coordinates")
-    } else {
+  }else if(weighting == "auto"){
       # dataset with the data of the Mastree points
       mt_bioreg <- lapply(list.files(system.file('extdata', package = 'foreMast'), pattern = "csv",
                                      full.names = TRUE), utils::read.csv)
@@ -134,8 +133,7 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
       # nearest point
       min.distance <- dplyr::filter(bind.df, distanceFromPoint == min(distanceFromPoint))
       st0s <- ffst0(t=t, p=p, start.year = start.year, wt=min.distance$b_wt, wp=min.distance$b_wp)
-    }
-  }else{
+    }else{
     if((weighting == "manual") & (is.null(weights))){
     stop("Error: please insert the weights for t and p as an array")
     }else{

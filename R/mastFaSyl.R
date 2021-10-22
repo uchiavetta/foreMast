@@ -67,13 +67,22 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
     P.s <- p <- (as.numeric(P.df$Jun) + as.numeric(P.df$Jul) + as.numeric(P.df$Aug))/3
 
   }else{
-    #this part works when a csv file is passed to the function
-    if(is.null(csv.coordinates)){
-      stop("Error: please insert the coordinates")
-    }else{
-      lat <- csv.coordinates[1]
-      lon <- csv.coordinates[2]
+    #this part works only when the file is a csv and weighting == auto
+    if(weighting == "auto"){
+      if(is.null(csv.coordinates)){
+        stop("Error: please insert the coordinates")
+      }else{
+        lat <- csv.coordinates[1]
+        lon <- csv.coordinates[2]
 
+        climateDf <- utils::read.csv(fName)
+        start.year <- min(climateDf[1])
+
+        t <- climateDf[2][1:nrow(climateDf), ]
+        p <- climateDf[3][1:nrow(climateDf), ]
+      }
+    }else{
+      #this part works when a csv file is passed to the function and weighting == standard | weighting == manual
       climateDf <- utils::read.csv(fName)
       start.year <- min(climateDf[1])
 

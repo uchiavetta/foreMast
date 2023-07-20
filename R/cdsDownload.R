@@ -14,6 +14,8 @@
 #' @param sPath The path of the directory where the file is going to be saved (string)
 #' @param site_id Set as empty, it is a string where it is possible to insert the study area id, which will be
 #'                reported in the file name
+#' @param start_date Set as 1950, it is it is the first year of available data in Copernicus CDS service (integer)
+#'
 #'
 #'@examples
 #'\dontrun{
@@ -25,14 +27,14 @@
 #' cdsDownload(U_ID = user_id, API_Key = user_key, lat = N, lon = E, sPath = dir, site_id = "")
 #'}
 #'@export
-cdsDownload <- function(U_ID, API_Key, lat, lon, sPath = getwd(), site_id = ""){
+cdsDownload <- function(U_ID, API_Key, lat, lon, sPath = getwd(), site_id = "", start_date = 1950){
   cat("\n")
   cat("Check the download request progress at https://cds.climate.copernicus.eu/cdsapp#!/yourrequests")
   cat("\n")
   cat("\n")
   dir.create(sPath, showWarnings = F)
   ecmwfr::wf_set_key(user = U_ID, key = API_Key, service = 'cds')
-  start.year = 1981
+  start.year = start_date
   end.year = format(Sys.time(), "%Y") #Current year
   yearL = as.character(start.year:end.year)
   monthL = stringr::str_pad(1:12, 2, pad = "0")

@@ -62,12 +62,9 @@ mastFaSyl <- function(fName, csv.coordinates = c(NULL, NULL), weighting = "", we
 
     t2m <- stats::ts((ncdf4::ncvar_get(nc, "t2m") - 273.15)[!is.na(ncdf4::ncvar_get(nc, "t2m"))], frequency = 12,
                      start = c(as.numeric(start.year, 1)))
+
     tp <- stats::ts((ncdf4::ncvar_get(nc, "tp")*1000*30)[!is.na(ncdf4::ncvar_get(nc, "tp"))], frequency = 12,
                     start = c(as.numeric(start.year, 1)))
-
-    t2m <- stats::ts((ncdf4::ncvar_get(nc, "t2m") - 273.15)[!is.na(ncdf4::ncvar_get(nc, "t2m"))], frequency = 12,
-                     start = c(as.numeric(start.year, 1)))
-
 
     Tmean.df <- data.frame(stats::.preformat.ts(t2m), stringsAsFactors = FALSE) # from time series to data frame
     Tmean.s <- t <- (as.numeric(Tmean.df$Jun) + as.numeric(Tmean.df$Jul) + as.numeric(Tmean.df$Aug))/3

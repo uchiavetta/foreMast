@@ -25,5 +25,5 @@ nc_to_monthly_csv <- function(ncfile, lat, lon, outfile) {
   df$month <- month(df$date)
 
   write.csv(df, outfile, row.names = FALSE)
-  message("CSV créé : ", outfile)
+  message("\nCSV créé : ", outfile)
 }

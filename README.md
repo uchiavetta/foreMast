@@ -144,7 +144,10 @@ cmd\run_pipeline.bat
 
     livrable/YYYYMMDD/<timestamp>_chart_foremast.png
 
+    <img src="livrable/20260213/20260213_09271200_chart_foremast.png" width="600">
+
     <img src="livrable/20260213/20260213_14370100_chart_foremast.png" width="600">
+
 ---
 
 # 📦 6. Dépendances
@@ -181,4 +184,5 @@ Cette contribution :
 🙌 8. Remerciements
 
 Merci aux mainteneurs du projet foreMast pour leur travail.
+
 Cette contribution vise à enrichir l’écosystème en facilitant l’accès aux données climatiques et en automatisant la chaîne de prédiction.

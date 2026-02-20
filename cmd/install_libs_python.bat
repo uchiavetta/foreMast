@@ -1,6 +1,6 @@
 @echo off
 cls
-title Telechargement-- API :: %COMPUTERNAME% -- %USERNAME%
+title Installation libs -- API :: %COMPUTERNAME% -- %USERNAME%
 color 2F
 mode con cols=100 lines=40
 echo =================================================================================
@@ -13,19 +13,28 @@ echo Par Jeros VIGAN ^< zedauna ^>
 echo.
 echo =================================================================================
 echo %time%
+
+REM === Chemins complets === 
+set PYTHON="D:\tools\WPy64-31180\python-3.11.8.amd64\python.exe"
 echo.
+
 REM mise à jour du module PIP
-python -m pip install --upgrade pip
+%PYTHON% -m pip install --upgrade pip
 timeout 5 > NUL
 echo %time%
 echo.
+
 REM installation des packages
-python -m pip install cdsapi zipfile time json datetime
+%PYTHON% -m pip install cdsapi zipfile time json datetime
+timeout 5 > NUL
+echo %time
 echo.
+
 REM listes des modules
-python -m pip list
+%PYTHON% -m pip list
 timeout 5 > NUL
 echo %time%
+echo.
 echo Merci pour l'utilisation de ce programme!
 echo.
 echo Appuyez sur une touche pour quitter...

@@ -25,8 +25,8 @@ if "%API_KEY%"=="" goto fin
 echo.
 
 REM === Chemins complets === 
-set PYTHON="C:\Windows\py.exe"
-set RSCRIPT="C:\Program Files\R\R-4.4.2\bin\Rscript.exe"
+set PYTHON="D:\tools\WPy64-31180\python-3.11.8.amd64\python.exe"
+set RSCRIPT="C:\Users\jv08720\AppData\Local\Programs\R\R-4.4.0\bin\Rscript.exe"
 
 REM === Chemin du répertoire du batch ===
 set SCRIPT_DIR=%~dp0

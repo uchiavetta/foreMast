@@ -1,6 +1,10 @@
-# 📘 Pipeline foreMast : Téléchargement API CDS , Traitement R > Graphiques de prédiction
+<img src="inst/logo_foreMast.png" width="100">
 
-## 📌 Contexte
+# foreMast
+
+## 📘 Pipeline: Téléchargement API CDS , Traitement R > Graphiques de prédiction
+
+### 📌 Contexte
 Cette amélioration ajoute au projet *foreMast* un pipeline complet permettant :
 
     - de télécharger automatiquement les données climatiques ERA5 via la **nouvelle API Copernicus CDS** ;
@@ -16,6 +20,8 @@ Ce pipeline vise à faciliter l’utilisation du modèle foreMast par des utilis
 ```bat
 foreMast/
  ├── cmd/
+ │    └── _functions/
+ │          └── functions.R
  │    ├── install_python_libs.bat
  │    ├── run_pipeline.bat
  │    ├── script_download.py
@@ -27,9 +33,6 @@ foreMast/
  ├── livrable/
  │    └── YYYYMMDD/
  │          └── <timestamp>_chart_foremast.png
- ├── dossier/
- │    └── _functions/
- │          └── functions.R
  └── README.md
  ```
 ---
@@ -141,6 +144,7 @@ cmd\run_pipeline.bat
 
     livrable/YYYYMMDD/<timestamp>_chart_foremast.png
 
+    <img src="livrable/20260213/20260213_14370100_chart_foremast.png" width="600">
 ---
 
 # 📦 6. Dépendances

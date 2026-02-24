@@ -2,56 +2,187 @@
 
 # foreMast
 
+## 📘 Pipeline: Téléchargement API CDS , Traitement R > Graphiques de prédiction
 
+### 📌 Contexte
+Cette amélioration ajoute au projet *foreMast* un pipeline complet permettant :
 
-This package is a tool that can be used to forecast masting events of European beech (*Fagus sylvatica L.*) based on monthly climatic cues (precipitation and mean temperature) which are available from the Copernicus ERA-5 Climate Data Hub
+    - de télécharger automatiquement les données climatiques ERA5 via la **nouvelle API Copernicus CDS** ;
+    - de traiter ces données avec le package R `foreMast` ;
+    - de générer automatiquement les prédictions de masting et les graphiques associés ;
+    - d’orchestrer l’ensemble via un **script Batch Windows**.
 
-## Installation
-The package can be installed typing:
-```r
-# install.packages(devtools) #uncomment if you need to install devtools pkg
-library(devtools)
-devtools::install_github("uchiavetta/foreMast", build_vignettes = F, upgrade = F)
+Ce pipeline vise à faciliter l’utilisation du modèle foreMast par des utilisateurs non experts, tout en garantissant une reproductibilité complète.
+
+---
+
+# 🧱 Architecture du pipeline
+```bat
+foreMast/
+ ├── cmd/
+ │    └── _functions/
+ │          └── functions.R
+ │    ├── install_python_libs.bat
+ │    ├── run_pipeline.bat
+ │    ├── script_download.py
+ │    └── script_traitement.R
+ ├── data/
+ │    └── YYYYMMDD/
+ │          ├── _zip/
+ │          └── _csv/
+ ├── livrable/
+ │    └── YYYYMMDD/
+ │          └── <timestamp>_chart_foremast.png
+ └── README.md
+ ```
+---
+# ⚙️ 1. Installation des dépendances Python
+Le script `install_python_libs.bat` installe automatiquement les bibliothèques nécessaires.
+
+## 📌 Configuration préalable
+Modifier le chemin absolu de Python :
+
+```bat
+    set PYTHON="D:\tools\WPy64-31180\python-3.11.8.amd64\python.exe"
 ```
+cmd\install_python_libs.bat
 
-## Functions
-The package is composed by three functions:
-
-### a) cdsDownload(U_ID, API_Key, lat, lon, sPath, site_id = "")
-This function allow to download the data of the monthly average temperatures and total precipitations, from 1981 to the current date. The data come from the "ERA5-Land monthly averaged data from 1981 to present". They are downloaded via the Copernicus CDS API, therefore the registration is required https://cds.climate.copernicus.eu/#!/home.
-Before you can download any data you have to make sure to accept the terms and conditions here: 
-https://cds.climate.copernicus.eu/cdsapp/#!/terms/licence-to-use-copernicus-products.
-On the user page, the UID and API Key are reported, which are needed as parameters for the function that works as follow:
-```r
-library(foreMast)
-user = "xxxxx" 
-key = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" #use the UID and the API key in your Copernicus CDS User profile
-N = 43.2 
-E = 11.3 #for southing and westing coordinates use negative values
-siteId = "siteName" #it will be attached to the name of the file to be downloaded, along with the user id
-
-cdsDownload(U_ID = user, API_Key = key, lat = N, lon = E, sPath = dir, site_id = "")
+```bat
+Modules installés :
+    cdsapi
+    zipfile (stdlib)
+    json (stdlib)
+    datetime (stdlib)
+    time (stdlib)
 ```
-After that, a file with the NetCDF extension (.nc) will be saved in the directory passed as parameter, containing all the neded data.
+---
+# ⚙️ 2. Script Python - Téléchargement via API CDS
+Le script script_download.py :
 
-### b) mastFaSyl(fName)
-This function is the core of the package and contains the algorithm that calculate the mast probability, given the downloaded file with the climate cues, returning as output a table with one column containing the year series and a second one with the predicted probability (calculated as percent rank):
+    - lit les arguments : latitude, longitude, clé API ;
+    - construit un rectangle géographique autour du point ;
+    - télécharge les données ERA5 mensuelles ;
+    - décompresse les fichiers NetCDF ;
+    - organise les données dans data/YYYYMMDD/.
 
-```r
-# library(foreMast)
-data = "~/download/xxxxx_siteName_t2p_tp.nc"
-mast = mastFaSyl(fName = data, weighting = "auto")
+## 📌 Arguments
+| Argument|Description|
+| ----------- | ----------- |
+| lat|Latitude|
+| lon|Longitude|
+| API_KEY|Clé CDS (format : uid:apikey)|
+
+##  📌 Exemple
+```bat
+    python script_download.py 44.5 2.9 "12345:abcdefg-1234"
 ```
-### c) probPlot(prediction)
-This third function takes the previous function output and plots it returning a line chart divided in three main areas: 
-1. a lightgreen one for the values that go from 0 to 0.5 (low seed production probability); 
-2. a green one for the values between 0.5 and 0.75 (medium seed production probability);
-3. a darkgreen one for the values that go from 0.75 and 1 (high/very high large seed production probability).
+---
 
-```r
-# library(foreMast)
-# mast = mastFaSyl(fName = data, weighting = "auto")
-chart = probPlot(prediction = mast)
-plot(chart)
+# ⚙️ 3. Script R - Traitement & prédiction foreMast
+Le script script_traitement.R :
+
+    * lit les arguments --lat et --lon ;
+    * localise automatiquement le répertoire du projet ;
+    * convertit les NetCDF en CSV ;
+    * joint les données climatiques ;
+    * calcule les moyennes estivales ;
+    * génère la prédiction via mastFaSyl() ;
+    * produit un graphique via probPlot() ;
+    * sauvegarde le PNG dans livrable/YYYYMMDD/.
+
+## 📌 Arguments
+|Argument	| Description |
+| ----------- | ----------- |
+|--lat	| Latitude |
+|--lon	| Longitude |
+
+##  📌 Exemple
+```bat
+    Rscript script_traitement.R --lat 44.5 --lon 2.9
 ```
-<img src="inst/examplot.png" width="400">
+---
+# ⚙️ 4. Script Batch principal - Orchestration du pipeline
+Le script run_pipeline.bat :
+ - demande à l’utilisateur :
+     - latitude
+     - longitude
+     - clé API
+
+ - exécute le script Python ;
+ - exécute le script R.
+
+## 📌 Paramétrage des chemins
+```bat
+    set PYTHON="D:\tools\WPy64-31180\python-3.11.8.amd64\python.exe"
+    set RSCRIPT="C:\Users\...\R\R-4.4.0\bin\Rscript.exe"
+```
+## 📌 Exécution
+cmd\run_pipeline.bat
+
+---
+
+# 🧪 5. Exemple de flux complet
+1. L’utilisateur lance run_pipeline.bat.
+
+2. Il saisit :
+    |Argument	| Description |
+    | ----------- | ----------- |
+    |latitude  | 44.55|
+    |longitude | 2.93|
+    |clé API | uid:apikey|
+
+3. Le script Python télécharge ERA5 → data/YYYYMMDD/.
+
+4. Le script R :
+
+    - convertit les NetCDF en CSV,
+    - calcule les indicateurs climatiques,
+    - génère la prédiction,
+    - produit un graphique PNG.
+
+5. Le résultat final est disponible dans :
+
+    livrable/YYYYMMDD/<timestamp>_chart_foremast.png
+
+    <img src="livrable/20260213/20260213_09271200_chart_foremast.png" width="600">
+
+    <img src="livrable/20260213/20260213_14370100_chart_foremast.png" width="600">
+
+---
+
+# 📦 6. Dépendances
+Python
+
+    - Python ≥ 3.10
+    - cdsapi
+    - zipfile
+    - json
+    - datetime
+
+R
+
+    R ≥ 4.2
+    Packages :
+        - foreMast
+        - terra
+        - dplyr
+        - lubridate
+        - ncdf4
+        - pacman
+---
+
+# 🧭 7. Points d’intégration pour les mainteneurs
+Cette contribution :
+
+    - n’altère pas les fonctions internes du package foreMast ;
+    - ajoute un pipeline optionnel, simple à utiliser ;
+    - respecte l’architecture existante ;
+    - facilite la reproductibilité des analyses climatiques ;
+    - prépare le terrain pour une automatisation future (CI/CD).
+---
+
+🙌 8. Remerciements
+
+Merci aux mainteneurs du projet foreMast pour leur travail.
+
+Cette contribution vise à enrichir l’écosystème en facilitant l’accès aux données climatiques et en automatisant la chaîne de prédiction.
